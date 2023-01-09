@@ -11,6 +11,8 @@ let v1;
 let v2;
 let v3;
 
+var locationData;
+
 async function preload() {
   // load firebase app module
   // it will be loaded in a variable called initializeApp
@@ -47,6 +49,9 @@ async function preload() {
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
+
+  locationData =  getCurrentPosition();
+
 }
 
 function setup() {
@@ -63,6 +68,9 @@ function setup() {
   v1 = random(255);
   v2 = random(255);
   v3 = random(255);
+
+
+  getCurrentPosition(doThisOnLocation)
 }
 
 function draw() {
@@ -93,6 +101,12 @@ function submitDiametro() {
   db.set(newDiametro, data);
   // initialize score variable
   diametro = 0;
+}
+
+function doThisOnLocation(position){
+  print("lat: " + position.latitude);
+  print("long: " + position.longitude);
+  print("accuracy: " + position.accuracy)
 }
 
 // Retrieves circles on load and automatically on every database update (realtime database)
