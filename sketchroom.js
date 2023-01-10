@@ -126,6 +126,7 @@ function draw() {
   rect(width / 2, height / 2, sommadiametri, sommadiametri);
 
   if (keys) {
+    
     keys.forEach(function (key) {
       
       fill(diametri[key].v1, diametri[key].v2, diametri[key].v3, 100- diametri[key].acc);
@@ -142,6 +143,8 @@ function draw() {
       fill("black");
       textSize(12);
       text(diametri[key].name, x, y - 20);
+
+
     }
   }
 
