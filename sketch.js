@@ -10,10 +10,16 @@ let scoreRef;
 let v1;
 let v2;
 let v3;
+let lat;
+let lng;
+let acc;
 
 var locationData;
 
 async function preload() {
+
+  locationData =  getCurrentPosition();
+
   // load firebase app module
   // it will be loaded in a variable called initializeApp
   const fb_app = "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
@@ -48,14 +54,23 @@ async function preload() {
   scoreRef = db.ref(database, "diametri");
   // define the callback function that will be called when
   // new data will arrive
-  db.onValue(scoreRef, getDiametro);
+  //db.onValue(scoreRef, getDiametro);
 
-  locationData =  getCurrentPosition();
+
 
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
+
+  
+
+  lat = locationData.latitude
+  lng = locationData.longitude + 100
+  acc = locationData.accuracy
+  console.log(lat,lng,acc)
+  
+  
   diametro = 0;
   createP("Click the button to get points");
   button = createButton("click");
@@ -69,8 +84,6 @@ function setup() {
   v2 = random(255);
   v3 = random(255);
 
-
-  getCurrentPosition(doThisOnLocation)
 }
 
 function draw() {
@@ -92,7 +105,10 @@ function submitDiametro() {
     diametro: diametro,
     v1: v1,
     v2: v2,
-    v3: v3,
+    v3: v3, 
+    lat: lat,
+    lng: lng,
+    acc:acc,
   };
 
   // create a new entry
@@ -103,11 +119,7 @@ function submitDiametro() {
   diametro = 0;
 }
 
-function doThisOnLocation(position){
-  print("lat: " + position.latitude);
-  print("long: " + position.longitude);
-  print("accuracy: " + position.accuracy)
-}
+
 
 // Retrieves circles on load and automatically on every database update (realtime database)
 //function getDiametro(data) {

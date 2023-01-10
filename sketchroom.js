@@ -13,7 +13,22 @@ let sommadiametri = 5;
 let keys = [];
 let diametri;
 
+var locationData;
+
+let RoundUp = 0.01
+/*let d = 1;
+let r = 6371;
+
+let dLat = (d / r) * (180 / Math.PI);
+let dLon = (d / r) * (180 / Math.PI) / Math.cos(lat);
+*/
+
+
+
+
 async function preload() {
+
+  locationData =  getCurrentPosition();
   // load firebase app module
   // it will be loaded in a variable called initializeApp
   const fb_app = "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
@@ -49,6 +64,8 @@ async function preload() {
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
+
+  
 }
 
 // Retrieves circles on load and automatically on every database update (realtime database)
@@ -64,7 +81,11 @@ function getDiametro(data) {
       diametri[key].diametro,
       diametri[key].v1,
       diametri[key].v2,
-      diametri[key].v3
+      diametri[key].v3,
+      diametri[key].lat,
+      diametri[key].lng,
+      diametri[key].acc,
+
     );
     sommadiametri = sommadiametri + diametri[key].diametro;
   });
@@ -73,8 +94,18 @@ function getDiametro(data) {
 //SETUP
 
 function setup() {
+ 
   createCanvas(windowWidth, windowHeight);
   randomnumber = random(0, 15);
+
+
+  myLat = locationData.latitude
+  myLng = locationData.longitude
+  myAcc = locationData.accuracy
+  console.log(myLat,myLng,myAcc)
+  
+
+
 }
 
 let seed = 0;
@@ -90,25 +121,39 @@ function draw() {
   fill("blue");
   text("Utente: " + nomeutente, width / 2, height / 2 + 200);
 
+  
   rectMode(CENTER);
   rect(width / 2, height / 2, sommadiametri, sommadiametri);
 
   if (keys) {
     keys.forEach(function (key) {
-      fill(diametri[key].v1, diametri[key].v2, diametri[key].v3);
+      
+      fill(diametri[key].v1, diametri[key].v2, diametri[key].v3, 100- diametri[key].acc);
       let x = noise((seed + 1000 * diametri[key].v1) / 300) * windowWidth;
       let y = noise((seed - 1000 * diametri[key].v1) / 300) * windowHeight;
+      let lat = diametri[key].lat
+      let lng = diametri[key].lng
+
+
+      if ((lat <= myLat+RoundUp) && (lat >= myLat-RoundUp) ) {
+        if ((lng <= myLng+RoundUp) && (lng >= myLng-RoundUp)){
+
       circle(x, y, diametri[key].diametro);
       fill("black");
       textSize(12);
       text(diametri[key].name, x, y - 20);
+    }
+  }
 
       if (mouseIsPressed === true) {
         var distance = dist(mouseX, mouseY, x, y);
         if (distance < diametri[key].diametro) {
           nomeutente = diametri[key].name;
         }
-      }
+        }
+      
     });
   }
+ 
+  
 }
