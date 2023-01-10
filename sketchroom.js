@@ -55,9 +55,12 @@ async function preload() {
   // The reference to database key where we store data
   // we use this both for reading and writing
   scoreRef = db.ref(database, "diametri");
+
+  scoreRef2 = db.ref(database, "stelle")
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
+  db.onValue(scoreref2, getStella);
 }
 
 // Retrieves circles on load and automatically on every database update (realtime database)
@@ -83,6 +86,19 @@ function getDiametro(data) {
   });
 }
 
+
+function getStella(data) {
+
+  //get incoming data
+  stelle = data.val();
+  stars = Object.keys(stelle);
+
+  stars.forEach(function (key){
+    
+  console.log(stelle[key].latStella)
+});
+}
+
 //SETUP
 
 function setup() {
@@ -95,6 +111,20 @@ function setup() {
   laptopLng = locationData.longitude
   laptopAcc = locationData.accuracy
   console.log(laptopLat,laptopLng,laptopAcc)
+
+  if (keys) {
+    keys.forEach(function (key) {
+      
+      let lat = diametri[key].lat
+      let lng = diametri[key].lng
+      if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
+        if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
+          submitStella()
+        }
+  }});
+  }
+
+  
 }
 
 function draw() {
@@ -120,7 +150,6 @@ function draw() {
 
       if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
         if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
-
       circle(x, y, diametri[key].diametro);
       fill("black");
       textSize(12);
@@ -138,4 +167,18 @@ function draw() {
   }
  
   
+}
+
+
+function submitStella(){
+  console.log("ciao")
+  let data = {
+    latStella:laptopLat,
+    lngStella:laptopLng,
+    diametro:sommadiametri,
+  };
+
+const newStella = db.push(scoreRef2);
+db.set(newStella, data);
+
 }
