@@ -1,7 +1,3 @@
-let nameInput;
-let submitButton;
-let button;
-let diametro;
 // firebase global variables
 let db;
 let database;
@@ -9,26 +5,24 @@ let scoreRef;
 
 //Dimesione Stella
 let sommadiametri = 5;
-
 let keys = [];
 let diametri;
 
-var locationData;
+//geolocation 
+var locationData; //geolocation variable
+let RoundUp = 0.01 //geolocation round up 
 
-let RoundUp = 0.01
-/*let d = 1;
-let r = 6371;
+//noise variable
+let seed = 0;
 
-let dLat = (d / r) * (180 / Math.PI);
-let dLon = (d / r) * (180 / Math.PI) / Math.cos(lat);
-*/
-
-
-
+//object name
+let nomeutente;
 
 async function preload() {
 
+  //geolocation function
   locationData =  getCurrentPosition();
+
   // load firebase app module
   // it will be loaded in a variable called initializeApp
   const fb_app = "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
@@ -64,19 +58,17 @@ async function preload() {
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
-
-  
 }
 
 // Retrieves circles on load and automatically on every database update (realtime database)
 function getDiametro(data) {
+
   //get incoming data
   diametri = data.val();
   keys = Object.keys(diametri);
 
   keys.forEach(function (key) {
-    console.log(
-      key,
+    console.log(key,
       diametri[key].name,
       diametri[key].diametro,
       diametri[key].v1,
@@ -85,8 +77,8 @@ function getDiametro(data) {
       diametri[key].lat,
       diametri[key].lng,
       diametri[key].acc,
-
     );
+
     sommadiametri = sommadiametri + diametri[key].diametro;
   });
 }
@@ -94,22 +86,16 @@ function getDiametro(data) {
 //SETUP
 
 function setup() {
- 
+
+  //create the canvas
   createCanvas(windowWidth, windowHeight);
-  randomnumber = random(0, 15);
-
-
-  myLat = locationData.latitude
-  myLng = locationData.longitude
-  myAcc = locationData.accuracy
-  console.log(myLat,myLng,myAcc)
-  
-
-
+ 
+  //set laptop location
+  laptopLat = locationData.latitude
+  laptopLng = locationData.longitude
+  laptopAcc = locationData.accuracy
+  console.log(laptopLat,laptopLng,laptopAcc)
 }
-
-let seed = 0;
-let nomeutente;
 
 function draw() {
   seed++;
@@ -120,15 +106,11 @@ function draw() {
   text("Ci sono " + keys.length + " utenti", width / 2, height / 2 - 200);
   fill("blue");
   text("Utente: " + nomeutente, width / 2, height / 2 + 200);
-
-  
   rectMode(CENTER);
   rect(width / 2, height / 2, sommadiametri, sommadiametri);
 
   if (keys) {
-    
     keys.forEach(function (key) {
-      
       fill(diametri[key].v1, diametri[key].v2, diametri[key].v3, 100- diametri[key].acc);
       let x = noise((seed + 1000 * diametri[key].v1) / 300) * windowWidth;
       let y = noise((seed - 1000 * diametri[key].v1) / 300) * windowHeight;
@@ -136,15 +118,13 @@ function draw() {
       let lng = diametri[key].lng
 
 
-      if ((lat <= myLat+RoundUp) && (lat >= myLat-RoundUp) ) {
-        if ((lng <= myLng+RoundUp) && (lng >= myLng-RoundUp)){
+      if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
+        if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
 
       circle(x, y, diametri[key].diametro);
       fill("black");
       textSize(12);
       text(diametri[key].name, x, y - 20);
-
-
     }
   }
 
@@ -154,7 +134,6 @@ function draw() {
           nomeutente = diametri[key].name;
         }
         }
-      
     });
   }
  
