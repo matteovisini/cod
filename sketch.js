@@ -66,7 +66,7 @@ function setup() {
   
 
   lat = locationData.latitude
-  lng = locationData.longitude + 100
+  lng = locationData.longitude
   acc = locationData.accuracy
   console.log(lat,lng,acc)
   
