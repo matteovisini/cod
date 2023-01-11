@@ -196,8 +196,6 @@ function checkStelle(){
  check1 = 0
  check2 = 0
 
- 
-
 if (stars) {
    stars.forEach(function (key) {
      let myLatStella = stelle[key].latStella 
@@ -212,16 +210,11 @@ if (stars) {
          check1 = 1
          }
        }
-
       else{
         console.log("dove corri?")
         check2 ++
-  
-      
         }
-         
-        
-       
+           
       }}
        )
        if (check2>0)

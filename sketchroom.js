@@ -194,6 +194,7 @@ function draw() {
 
       if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
         if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
+          
       circle(x, y, diametri[key].diametro);
       fill("black");
       textSize(12);
