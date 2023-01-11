@@ -6,6 +6,15 @@ let diametro;
 let db;
 let database;
 let scoreRef;
+let scoreRef2;
+
+//Dimesione Stella
+let sommadiametri = 5;
+let keys = [];
+let diametri;
+
+let stelle;
+let stars = [];
 
 let v1;
 let v2;
@@ -15,6 +24,8 @@ let lng;
 let acc;
 
 var locationData;
+let RoundUp = 0.01
+
 
 async function preload() {
 
@@ -56,12 +67,51 @@ async function preload() {
   // new data will arrive
   //db.onValue(scoreRef, getDiametro);
 
+  scoreRef2 = db.ref(database, "stelle")
+  // define the callback function that will be called when
+  // new data will arrive
+  db.onValue(scoreRef, getDiametro);
+  db.onValue(scoreRef2, getStella);
+
 
 
 }
 
+function getDiametro(data) {
+
+  //get incoming data
+  diametri = data.val();
+  keys = Object.keys(diametri);
+}
+
+
+function getStella(data) {
+
+  //get incoming data
+  stelle = data.val();
+  stars = Object.keys(stelle);
+
+  stars.forEach(function (key){
+    
+  console.log(stelle[key].latStella)
+});
+} 
+
+ function submitStella(){
+  console.log("ciao")
+  let data = {
+    latStella:laptopLat,
+    lngStella:laptopLng,
+    diametro:sommadiametri,
+    check: 0,
+    
+  };
+  const newStella = db.push(scoreRef2);
+db.set(newStella, data);
+}
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
+  
 
   
 
@@ -78,6 +128,8 @@ function setup() {
   nameInput = createInput("name");
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
+ 
+
 
   //randomcolor
   v1 = random(255);
@@ -117,6 +169,7 @@ function submitDiametro() {
   db.set(newDiametro, data);
   // initialize score variable
   diametro = 0;
+  checkStelle()
 }
 
 
@@ -132,3 +185,60 @@ function submitDiametro() {
 //   diametro = scores[key].score;
 // });
 //}
+
+
+function checkStelle(){
+ //set laptop location
+ laptopLat = locationData.latitude +100
+ laptopLng = locationData.longitude
+ laptopAcc = locationData.accuracy
+ console.log(laptopLat,laptopLng,laptopAcc)
+ check1 = 0
+ check2 = 0
+
+ 
+
+if (stars) {
+   stars.forEach(function (key) {
+     let myLatStella = stelle[key].latStella 
+     let myLngStella = stelle[key].lngStella
+     if (check1 === 1) {}
+     else {
+     if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
+       if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
+
+         console.log("vecchio, sei nella stessa posizione")
+         check2 =0
+         check1 = 1
+         }
+       }
+
+      else{
+        console.log("dove corri?")
+        check2 ++
+  
+      
+        }
+         
+        
+       
+      }}
+       )
+       if (check2>0)
+       {submitStella() }
+    }
+  
+
+
+
+function updateStella(){
+  console.log("update")
+  let data = {
+    check: 1,
+    
+  };
+  const newStella = db.push(scoreRef2);
+db.update(newStella, data);
+
+}
+}

@@ -2,11 +2,15 @@
 let db;
 let database;
 let scoreRef;
+let scoreRef2;
 
 //Dimesione Stella
 let sommadiametri = 5;
 let keys = [];
 let diametri;
+
+let stelle;
+let stars = [];
 
 //geolocation 
 var locationData; //geolocation variable
@@ -60,7 +64,7 @@ async function preload() {
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
-  db.onValue(scoreref2, getStella);
+  db.onValue(scoreRef2, getStella);
 }
 
 // Retrieves circles on load and automatically on every database update (realtime database)
@@ -107,24 +111,64 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
  
   //set laptop location
-  laptopLat = locationData.latitude
+  laptopLat = locationData.latitude +100
   laptopLng = locationData.longitude
   laptopAcc = locationData.accuracy
   console.log(laptopLat,laptopLng,laptopAcc)
 
-  if (keys) {
+let check = 0
+  if (stars) {
+    stars.forEach(function (key) {
+    
+      let myLatStella = stelle[key].latStella
+      let myLngStella = stelle[key].lngStella
+      if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
+        if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
+
+          console.log("vecchio, sei nella stessa posizione")
+          }
+        }
+
+        else { 
+          check = 1
+          
+        
+        }}
+ 
+        
+  ); 
+  if (check === 1) {submitStella()}
+  }
+
+  /* if (keys) {
     keys.forEach(function (key) {
-      
+    
       let lat = diametri[key].lat
       let lng = diametri[key].lng
       if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
         if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
+
           submitStella()
+          }
         }
-  }});
-  }
+ 
+        }
+  ); 
+  } */
 
   
+}
+
+function submitStella(){
+  console.log("ciao")
+  let data = {
+    latStella:laptopLat,
+    lngStella:laptopLng,
+    diametro:sommadiametri,
+    
+  };
+  const newStella = db.push(scoreRef2);
+db.set(newStella, data);
 }
 
 function draw() {
@@ -170,15 +214,14 @@ function draw() {
 }
 
 
-function submitStella(){
-  console.log("ciao")
+
+function updateStella(){
+  console.log("accidenti")
   let data = {
-    latStella:laptopLat,
-    lngStella:laptopLng,
     diametro:sommadiametri,
   };
 
-const newStella = db.push(scoreRef2);
-db.set(newStella, data);
-
+const updateStella = db.push(scoreRef2);
+db.update(updateStella, data);
 }
+
