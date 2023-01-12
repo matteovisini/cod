@@ -77,12 +77,12 @@ async function preload() {
   db.onValue(scoreRef2, getStella);
 }
 
-  //funzione ricezione dati pianeti
+//funzione ricezione dati pianeti
 function getDiametro(data) {
   diametri = data.val();
   keys = Object.keys(diametri);
 }
-  //funzione ricezione dati stelle
+//funzione ricezione dati stelle
 function getStella(data) {
   stelle = data.val();
   stars = Object.keys(stelle);
@@ -111,7 +111,7 @@ function setup() {
   diametro = 0;
   createP("Click the button to get points");
   button = createButton("click");
-  button.mousePressed(increaseDiametro);
+  button.mousePressed(increaseDiametro); // aumento diametro
   nameInput = createInput("name");
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
@@ -129,10 +129,12 @@ function draw() {
   circle(width / 2, height / 2, diametro);
 }
 
+//funzione aumento diametro
 function increaseDiametro() {
   diametro++;
 }
 
+//funzione push del bottone
 function submitDiametro() {
   let data = {
     name: nameInput.value(),
@@ -151,9 +153,11 @@ function submitDiametro() {
   db.set(newDiametro, data);
   // initialize score variable
   diametro = 0;
-  checkStelle()
+  // crea nuova stella al push del bottone
+  // checkStelle() 
 }
 
+//funzione check se stella con quella posizione è già nel database
 function checkStelle(){ 
 
   //set laptop location
@@ -192,9 +196,24 @@ if (stars) {
     }
 }
 
+//funzione crea stella
+function submitStella(){
+  let data = {
+    latStella:laptopLat,
+    lngStella:laptopLng,
+    diametro:sommadiametri,
+    check: 0,
+
+  };
+  const newStella = db.push(scoreRef2);
+db.set(newStella, data);
+}
+
+//funzione update stella già esistente
 function updateStella() {
   
   const newStella = db.push(scoreRef2);
 db.update(newStella, data);
 
 }
+

@@ -90,7 +90,6 @@ function getDiametro(data) {
   });
 }
 
-
 function getStella(data) {
 
   //get incoming data
@@ -103,72 +102,15 @@ function getStella(data) {
 });
 }
 
-//SETUP
-
+//setup
 function setup() {
-
-  //create the canvas
   createCanvas(windowWidth, windowHeight);
- 
-  //set laptop location
-  laptopLat = locationData.latitude +100
-  laptopLng = locationData.longitude
-  laptopAcc = locationData.accuracy
-  console.log(laptopLat,laptopLng,laptopAcc)
 
-let check = 0
-  if (stars) {
-    stars.forEach(function (key) {
-    
-      let myLatStella = stelle[key].latStella
-      let myLngStella = stelle[key].lngStella
-      if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
-        if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
- 
-          console.log("vecchio, sei nella stessa posizione")
-          }
-        }
-
-        else { 
-          check = 1
-          
-        
-        }}
- 
-        
-  ); 
-  if (check === 1) {submitStella()}
-  }
-
-  /* if (keys) {
-    keys.forEach(function (key) {
-    
-      let lat = diametri[key].lat
-      let lng = diametri[key].lng
-      if ((lat <= laptopLat+RoundUp) && (lat >= laptopLat-RoundUp) ) {
-        if ((lng <= laptopLng+RoundUp) && (lng >= laptopLng-RoundUp)){
-
-          submitStella()
-          }
-        }
- 
-        }
-  ); 
-  } */
-
-  
-}
-
-function submitStella(){
-  console.log("ciao")
-  let data = {
-    latStella:laptopLat,
-    lngStella:laptopLng,
-    diametro:sommadiametri,
-    
-  };
-  const newStella = db.push(scoreRef2);
-db.set(newStella, data);
+  lat = locationData.latitude
+  lng = locationData.longitude
+  acc = locationData.accuracy
+  console.log("Your current position is:",lat,lng,"accuracy:",acc)
+  checkStelle()
 }
 
 function draw() {
@@ -214,15 +156,72 @@ function draw() {
   
 }
 
+//funzione check se stella con quella posizione è già nel database
+function checkStelle() { 
+  
+  //set laptop location
+  laptopLat = locationData.latitude
+  laptopLng = locationData.longitude
+  laptopAcc = locationData.accuracy
 
+  // variabili per controllare il ciclo
+  submitcheck = 0 // per ogni stella, incrementa quando il laptop non è vicino. 
+  fine = 0  // se cambia, finisce il ciclo
+ 
+if (stars) {
+   stars.forEach(function (key) {
+     let myLatStella = stelle[key].latStella
+     let myLngStella = stelle[key].lngStella
 
-function updateStella(){
-  console.log("accidenti")
-  let data = {
-    diametro:sommadiametri,
-  };
-
-const updateStella = db.push(scoreRef2);
-db.update(updateStella, data);
+     if (fine === 0) {
+      if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
+        if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
+ 
+          console.log("location already in the dataset")
+          updateStella(key)
+          submitcheck =0
+          fine = 1
+          
+          }
+        }
+       else{
+         submitcheck ++
+        }
+      }
+    })
+      if (submitcheck>0){
+        console.log("new star in this location:", laptopLat,laptopLng,laptopAcc)
+  
+        submitStella() 
+      }
+    }
 }
 
+//funzione crea stella
+function submitStella(){
+  let data = {
+    latStella:laptopLat,
+    lngStella:laptopLng,
+    diametro:sommadiametri,
+    check: 0,
+
+  };
+  const newStella = db.push(scoreRef2);
+db.set(newStella, data);
+}
+
+//funzione update stella già esistente
+function updateStella(k) {
+  let chiave = k;
+  
+  console.log("accidenti", chiave, sommadiametri)
+  
+ var data =  {
+    diametro: sommadiametri
+ }
+  const updates = {};
+  updates['/stelle/' + chiave] = data;
+  //db.ref(database, "stelle/" + key).update(updates)
+  return update(ref(database), updates);
+
+}
