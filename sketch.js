@@ -1,21 +1,18 @@
+// Elementi pagina
 let nameInput;
 let submitButton;
 let button;
 let diametro;
+
 // firebase global variables
 let db;
 let database;
 let scoreRef;
 let scoreRef2;
 
-//Dimesione Stella
-let sommadiametri = 5;
-let keys = [];
+//elementi pianeti per database
+let keys = []; 
 let diametri;
-
-let stelle;
-let stars = [];
-
 let v1;
 let v2;
 let v3;
@@ -23,12 +20,20 @@ let lat;
 let lng;
 let acc;
 
+//elementi stelle per database
+let stelle;
+let stars = [];
+let sommadiametri = 5;
+
+
+// Geolocation variables
 var locationData;
 let RoundUp = 0.01
 
 
 async function preload() {
 
+  // Inizializzo Geolocalizzazione
   locationData =  getCurrentPosition();
 
   // load firebase app module
@@ -72,33 +77,20 @@ async function preload() {
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
   db.onValue(scoreRef2, getStella);
-
-
-
 }
 
+  //funzione ricezione dati pianeti
 function getDiametro(data) {
-
-  //get incoming data
   diametri = data.val();
   keys = Object.keys(diametri);
 }
-
-
+  //funzione ricezione dati stelle
 function getStella(data) {
-
-  //get incoming data
   stelle = data.val();
   stars = Object.keys(stelle);
-
-  stars.forEach(function (key){
-    
-  console.log(stelle[key].latStella)
-});
 } 
 
  function submitStella(){
-  console.log("ciao")
   let data = {
     latStella:laptopLat,
     lngStella:laptopLng,
@@ -111,14 +103,11 @@ db.set(newStella, data);
 }
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
-  
-
-  
 
   lat = locationData.latitude
   lng = locationData.longitude
   acc = locationData.accuracy
-  console.log(lat,lng,acc)
+  console.log("Your current position is:",lat,lng,"accuracy:",acc)
   
   
   diametro = 0;
@@ -135,14 +124,11 @@ function setup() {
   v1 = random(255);
   v2 = random(255);
   v3 = random(255);
-
 }
 
 function draw() {
   background(200);
   textSize(100);
-  //textAlign(CENTER, CENTER);
-  //text(score, width / 2, height / 2);
   fill(v1, v2, v3);
   circle(width / 2, height / 2, diametro);
 }
@@ -172,53 +158,41 @@ function submitDiametro() {
   checkStelle()
 }
 
+function checkStelle(){ 
 
+  //set laptop location
+  laptopLat = locationData.latitude
+  laptopLng = locationData.longitude
+  laptopAcc = locationData.accuracy
 
-// Retrieves circles on load and automatically on every database update (realtime database)
-//function getDiametro(data) {
-//get incoming data
-// let diametri = data.val();
-// let keys = Object.keys(diametri);
-
-// keys.forEach(function (key) {
-//   console.log(key, diametri[key].name, diametri[key].score);
-//   diametro = scores[key].score;
-// });
-//}
-
-
-function checkStelle(){
- //set laptop location
- laptopLat = locationData.latitude +100
- laptopLng = locationData.longitude
- laptopAcc = locationData.accuracy
- console.log(laptopLat,laptopLng,laptopAcc)
- check1 = 0
- check2 = 0
-
+  // variabili per controllare il ciclo
+  submitcheck = 0 // per ogni stella, incrementa quando il laptop non è vicino. 
+  fine = 0  // se cambia, finisce il ciclo
+ 
 if (stars) {
    stars.forEach(function (key) {
-     let myLatStella = stelle[key].latStella 
+     let myLatStella = stelle[key].latStella
      let myLngStella = stelle[key].lngStella
-     if (check1 === 1) {}
-     else {
-     if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
-       if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
 
-         console.log("vecchio, sei nella stessa posizione")
-         check2 =0
-         check1 = 1
-         }
-       }
-      else{
-        console.log("dove corri?")
-        check2 ++
+     if (fine === 0) {
+      if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
+        if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
+ 
+          console.log("location already in the dataset")
+          submitcheck =0
+          fine = 1
+          }
         }
-           
-      }}
-       )
-       if (check2>0)
-       {submitStella() }
+       else{
+         submitcheck ++
+        }
+      }
+    })
+      if (submitcheck>0){
+        console.log("new star in this location:", laptopLat,laptopLng,laptopAcc)
+  
+        submitStella() 
+      }
     }
   
 
