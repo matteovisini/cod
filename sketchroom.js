@@ -99,8 +99,8 @@ function getDiametro(data) {
       diametri[key].lng,
       diametri[key].acc
     );
-    singoloDiametro = diametri[key].diametro;
-    sommadiametri = sommadiametri + singoloDiametro;
+    /* singoloDiametro = diametri[key].diametro;
+    sommadiametri = sommadiametri + singoloDiametro; */
   });
 }
 
@@ -185,6 +185,9 @@ function draw() {
           fill("black");
           textSize(12);
           text(diametri[key].name, x, y - 20);
+          sommadiametri = 0;
+          singoloDiametro = diametri[key].diametro;
+          sommadiametri = sommadiametri + singoloDiametro;
         }
       }
 
@@ -207,7 +210,7 @@ function mouseMoved() {
 function checkStelle() {
   //set laptop location
   laptopLat = locationData.latitude;
-  laptopLng = locationData.longitude;
+  laptopLng = locationData.longitude +20;
   laptopAcc = locationData.accuracy;
 
   // variabili per controllare il ciclo
