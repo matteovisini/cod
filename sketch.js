@@ -25,11 +25,9 @@ let stelle;
 let stars = [];
 let sommadiametri = 5;
 
-
 // Geolocation variables
 var locationData;
 let RoundUp = 0.01
-
 
 async function preload() {
 
@@ -96,11 +94,12 @@ function getStella(data) {
     lngStella:laptopLng,
     diametro:sommadiametri,
     check: 0,
-    
+
   };
   const newStella = db.push(scoreRef2);
 db.set(newStella, data);
 }
+
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
 
@@ -108,8 +107,7 @@ function setup() {
   lng = locationData.longitude
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
-  
-  
+
   diametro = 0;
   createP("Click the button to get points");
   button = createButton("click");
@@ -118,8 +116,6 @@ function setup() {
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
  
-
-
   //randomcolor
   v1 = random(255);
   v2 = random(255);
@@ -194,18 +190,11 @@ if (stars) {
         submitStella() 
       }
     }
+}
+
+function updateStella() {
   
-
-
-
-function updateStella(){
-  console.log("update")
-  let data = {
-    check: 1,
-    
-  };
   const newStella = db.push(scoreRef2);
 db.update(newStella, data);
 
-}
 }

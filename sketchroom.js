@@ -124,7 +124,7 @@ let check = 0
       let myLngStella = stelle[key].lngStella
       if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
         if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
-
+ 
           console.log("vecchio, sei nella stessa posizione")
           }
         }
