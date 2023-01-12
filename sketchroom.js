@@ -210,7 +210,7 @@ function mouseMoved() {
 function checkStelle() {
   //set laptop location
   laptopLat = locationData.latitude;
-  laptopLng = locationData.longitude +20;
+  laptopLng = locationData.longitude;
   laptopAcc = locationData.accuracy;
 
   // variabili per controllare il ciclo
