@@ -1,14 +1,24 @@
-let cells = []; // array of Jitter objects
+let cells = []; // array of objects
 
 // firebase global variables
 let db;
 let database;
 let scoreRef;
+let scoreRef2;
+
+let keys = [];
+let diametri;
+
+let stelle;
+let stars = [];
+
+//geolocation
+var locationData; //geolocation variable
+let RoundUp = 0.01; //geolocation round up
 
 async function preload() {
-
   //geolocation function
-  locationData =  getCurrentPosition();
+  locationData = getCurrentPosition();
 
   // load firebase app module
   // it will be loaded in a variable called initializeApp
@@ -42,71 +52,126 @@ async function preload() {
   // The reference to database key where we store data
   // we use this both for reading and writing
   scoreRef = db.ref(database, "diametri");
+  scoreRef2 = db.ref(database, "stelle");
   // define the callback function that will be called when
   // new data will arrive
   db.onValue(scoreRef, getDiametro);
+  db.onValue(scoreRef2, getStella);
 }
+
+function getDiametro(data) {
+  //get incoming data
+  diametri = data.val();
+  keys = Object.keys(diametri);
+  console.log("la funzione getDiametro è partita");
+}
+
+function getStella(data) {
+  //get incoming data
+  stelle = data.val();
+  stars = Object.keys(stelle);
+  console.log("la funzione getStella è partita");
+}
+
+let sommacerchi;
+
+let laptopLat;
+let laptopLng;
+let laptopAcc;
 
 function setup() {
   angleMode(DEGREES);
   createCanvas(windowWidth, windowHeight);
-  // Create objects
-  for (let i = 0; i < 20; i++) {
-    cells.push(new blob());
-  }
+  
 
   //set laptop location
-  laptopLat = locationData.latitude
-  laptopLng = locationData.longitude
-  laptopAcc = locationData.accuracy
-  console.log(laptopLat,laptopLng,laptopAcc)
-  
+  laptopLat = locationData.latitude;
+  laptopLng = locationData.longitude;
+  laptopAcc = locationData.accuracy;
+  // Create objects
+
+  //stars.forEach(function (key) {
+}
+let mousemovecheck = 0;
+function arraycreation() {
+  if (mousemovecheck == 0) {
+    stars.forEach(function (key) {
+      sommacerchi = 0;
+      let latstar = stelle[key].latStella;
+      let lngstar = stelle[key].lngStella;
+      keys.forEach(function (key) {
+        //condizione se posizione è uguale a posizione stella
+        if (
+          diametri[key].lat <= latstar + RoundUp &&
+          diametri[key].lat >= latstar - RoundUp
+        ) {
+          if (
+            diametri[key].lng <= lngstar + RoundUp &&
+            diametri[key].lng >= lngstar - RoundUp
+          ) {
+            sommacerchi = sommacerchi + diametri[key].diametro;
+          }
+        }
+      });
+
+      //push object
+      cells.push(
+        new blob(sommacerchi, stelle[key].latStella, stelle[key].lngStella)
+      );
+    });
+  }
+  //mousemovecheck = 1;
 }
 
-let geoxlaptop = 400;
-let geoylaptop = 400;
+//let geoxlaptop = 400;
+//let geoylaptop = 400;
 
 function draw() {
   background(50, 89, 100);
+ 
   fill("white");
-  circle(width / 2, height / 2, 30);
-  for (let i = 0; i < cells.length; i++) {
+  //circle(width / 2, height / 2, 30);
+  //stars.forEach(function (key) {
+  for (let m = 0; m < cells.length; m++) {
     push();
     translate(width / 2, height / 2);
     fill("white");
-    cells[i].move();
-    cells[i].display();
+    cells[m].radialtrace();
+    cells[m].display();
     pop();
   }
+  //});
 }
 
 // Jitter class
 class blob {
-  constructor() {
+  constructor(sommacerchi, x, y) {
     //this.x = 500;
     //this.y = 510;
-    this.x = random(width);
-    this.y = random(height);
-    this.diameter = random(10, 30);
-    this.geox = geoxlaptop;
-    this.geoy = geoylaptop;
-    this.d;
+    this.x = x;
+    this.y = y;
+    this.diameter = sommacerchi;
+    this.pcx = laptopLat;
+    this.pcy = laptopLng;
     this.rand1 = random(180, 270);
     this.rand2 = random(0, 90);
     this.rand3 = random(90, 180);
     this.rand4 = random(0, -90);
-    this.xdiff = this.x - this.geox;
-    this.ydiff = this.y - this.geoy;
+    this.xdiff = this.x - this.pcx;
+    this.ydiff = this.y - this.pcy;
+    this.d = dist(this.pcx, this.pcy, this.x, this.y);
     // this.angle = atan(this.ydiff, this.xdiff) * (180 / 3, 14);
     // this.angle = 0;
   }
 
-  move() {
-    this.d = dist(this.geox, this.geoy, this.x, this.y);
+  radialtrace() {
+    //console.log("MAMMA MIA");
+    push();
     stroke("white");
     strokeWeight(0.1);
     noFill();
-    circle(0, 0, this.d * 2);
+    circle(0, 0, this.d * 2 * 8);
+    pop();
     //this.x += random(-this.speed, this.speed);
     // this.y += random(-this.speed, this.speed);
   }
@@ -114,7 +179,7 @@ class blob {
   display() {
     push();
     //rotate(0);
-    if (this.xdiff < 0 && this.ydiff < 0) {
+    /* if (this.xdiff < 0 && this.ydiff < 0) {
       rotate(this.angle);
     }
     if (this.xdiff > 0 && this.ydiff > 0) {
@@ -125,12 +190,17 @@ class blob {
     }
     if (this.xdiff > 0 && this.ydiff < 0) {
       rotate(this.angle);
-    }
+    } */
     fill("white");
     stroke("red");
-    strokeWeight("3");
+    strokeWeight(1);
     // line(0, 0, this.d / 2, 0);
-    ellipse(this.xdiff, this.ydiff, this.diameter, this.diameter);
+    ellipse(
+      this.xdiff * 8,
+      this.ydiff * 8,
+      this.diameter / 5,
+      this.diameter / 5
+    );
 
     pop();
   }

@@ -102,9 +102,9 @@ db.set(newStella, data);
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
-
-  lat = locationData.latitude + 10 //Cambia questo per forzare la tua lat
-  lng = locationData.longitude - 30//Cambia questo per forzare la tua lng
+  colorMode(HSB);
+  lat = locationData.latitude //Cambia questo per forzare la tua lat
+  lng = locationData.longitude //Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
 
