@@ -88,7 +88,7 @@ function getDiametro(data) {
   keys = Object.keys(diametri);
   sommadiametri = 0;
   keys.forEach(function (key) {
-    console.log(
+/*     console.log(
       key,
       diametri[key].name,
       diametri[key].diametro,
@@ -98,7 +98,7 @@ function getDiametro(data) {
       diametri[key].lat,
       diametri[key].lng,
       diametri[key].acc
-    );
+    ); */
     /* singoloDiametro = diametri[key].diametro;
     sommadiametri = sommadiametri + singoloDiametro; */
   });
@@ -110,8 +110,7 @@ function getStella(data) {
   stars = Object.keys(stelle);
 
   stars.forEach(function (key) {
-    console.log("ciao");
-    console.log(stelle[key].latStella);
+
     //checkStelle();
   });
 }
@@ -128,21 +127,6 @@ function submitStella() {
   db.set(newStella, data);
 }
 
-//funzione update stella già esistente
-function updateStella(k) {
-  let chiave = k;
-
-  console.log("accidenti", chiave, sommadiametri);
-
-  var data = {
-    diametro: sommadiametri,
-  };
-
-  // return db.ref(database, "/stelle/" + chiave).update(data);
-}
-
-//funzione check se stella con quella posizione è già nel database
-
 //setup
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -150,8 +134,9 @@ function setup() {
   lat = locationData.latitude;
   lng = locationData.longitude;
   acc = locationData.accuracy;
-  // console.log("Your current position is:", lat, lng, "accuracy:", acc);
-  //checkStelle(lat, lng, acc);
+  console.log("Your current position is:", lat, lng, "accuracy:", acc);
+  checkStelle();
+  
 }
 
 function draw() {
@@ -165,8 +150,10 @@ function draw() {
   text("Utente: " + nomeutente, width / 2, height / 2 + 200);
   rectMode(CENTER);
   rect(width / 2, height / 2, sommadiametri, sommadiametri);
+  
 
   if (keys) {
+    sommadiametri = 0;
     keys.forEach(function (key) {
       fill(
         diametri[key].v1,
@@ -185,7 +172,6 @@ function draw() {
           fill("black");
           textSize(12);
           text(diametri[key].name, x, y - 20);
-          sommadiametri = 0;
           singoloDiametro = diametri[key].diametro;
           sommadiametri = sommadiametri + singoloDiametro;
         }
@@ -201,58 +187,31 @@ function draw() {
   }
 }
 
-function mouseMoved() {
-  if (movimouse === 0) {
-    checkStelle();
-    movimouse = 1;
-  }
-}
+
 function checkStelle() {
   //set laptop location
-  laptopLat = locationData.latitude;
-  laptopLng = locationData.longitude;
+  laptopLat = locationData.latitude; //Cambia questo per forzare la tua lat
+  laptopLng = locationData.longitude; //Cambia questo per forzare la tua lng
   laptopAcc = locationData.accuracy;
 
-  // variabili per controllare il ciclo
-  submitcheck = 0; // per ogni stella, incrementa quando il laptop non è vicino.
   fine = 0; // se cambia, finisce il ciclo
 
   if (stars) {
-    console.log("ciao");
-
     stars.forEach(function (key) {
       myLatStella = stelle[key].latStella;
       myLngStella = stelle[key].lngStella;
-      console.log("2");
 
       if (fine === 0) {
-        if (
-          laptopLat >= myLatStella - RoundUp &&
-          laptopLat <= myLatStella + RoundUp
-        ) {
-          if (
-            laptopLng >= myLngStella - RoundUp &&
-            laptopLng <= myLngStella + RoundUp
-          ) {
-            console.log("location already in the dataset");
-            updateStella(key);
-            submitcheck = 0;
+        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp) {
+          if (laptopLng >= myLngStella - RoundUp && laptopLng <= myLngStella + RoundUp) {
+            console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
             fine = 1;
           }
-        } else {
-          submitcheck++;
+          else {
+          console.log("there's nothing here")
+        } ;
         }
       }
-    });
-    if (submitcheck > 0) {
-      console.log(
-        "new star in this location:",
-        laptopLat,
-        laptopLng,
-        laptopAcc
-      );
-
-      submitStella();
-    }
+    })
   }
 }

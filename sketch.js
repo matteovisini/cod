@@ -24,6 +24,7 @@ let acc;
 let stelle;
 let stars = [];
 let sommadiametri = 5;
+let stelleDatabase = 1;
 
 // Geolocation variables
 var locationData;
@@ -93,7 +94,6 @@ function getStella(data) {
     latStella:laptopLat,
     lngStella:laptopLng,
     diametro:sommadiametri,
-    check: 0,
 
   };
   const newStella = db.push(scoreRef2);
@@ -103,8 +103,8 @@ db.set(newStella, data);
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
 
-  lat = locationData.latitude
-  lng = locationData.longitude
+  lat = locationData.latitude + 10 //Cambia questo per forzare la tua lat
+  lng = locationData.longitude - 30//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
 
@@ -154,46 +154,52 @@ function submitDiametro() {
   // initialize score variable
   diametro = 0;
   // crea nuova stella al push del bottone
-  // checkStelle() 
+  checkStelle() 
 }
 
 //funzione check se stella con quella posizione è già nel database
-function checkStelle(){ 
-
+function checkStelle() {
   //set laptop location
-  laptopLat = locationData.latitude
-  laptopLng = locationData.longitude
-  laptopAcc = locationData.accuracy
+  laptopLat = lat //Cambia questo per forzare la tua lat
+  laptopLng = lng //Cambia questo per forzare la tua lng
+  laptopAcc = acc
 
   // variabili per controllare il ciclo
-  submitcheck = 0 // per ogni stella, incrementa quando il laptop non è vicino. 
-  fine = 0  // se cambia, finisce il ciclo
- 
-if (stars) {
-   stars.forEach(function (key) {
-     let myLatStella = stelle[key].latStella
-     let myLngStella = stelle[key].lngStella
+  submitcheck = 0; // per ogni stella, incrementa quando il laptop non è vicino.
+  fine = 0; // se cambia, finisce il ciclo
 
-     if (fine === 0) {
-      if ((laptopLat >= myLatStella-RoundUp) && (laptopLat <= myLatStella+RoundUp)) {
-        if ( (laptopLng >= myLngStella-RoundUp) && (laptopLng <= myLngStella + RoundUp)){
- 
-          console.log("location already in the dataset")
-          submitcheck =0
-          fine = 1
+  if (stars) {
+    
+
+    stars.forEach(function (key) {
+      myLatStella = stelle[key].latStella;
+      myLngStella = stelle[key].lngStella;
+      console.log("Stelle analizzata:", stelleDatabase);
+
+      if (fine === 0) {
+        stelleDatabase++
+        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp) {
+          if (laptopLng >= myLngStella - RoundUp && laptopLng <= myLngStella + RoundUp) {
+            console.log("location already in the dataset");
+            submitcheck = 0;
+            fine = 1;
           }
-        }
-       else{
-         submitcheck ++
+        } else {
+          submitcheck++;
         }
       }
-    })
-      if (submitcheck>0){
-        console.log("new star in this location:", laptopLat,laptopLng,laptopAcc)
-  
-        submitStella() 
-      }
+    });
+    if (submitcheck > 0) {
+      console.log(
+        "new star in this location:",
+        laptopLat,
+        laptopLng,
+        laptopAcc
+      );
+
+      submitStella();
     }
+  }
 }
 
 //funzione crea stella
@@ -207,13 +213,5 @@ function submitStella(){
   };
   const newStella = db.push(scoreRef2);
 db.set(newStella, data);
-}
-
-//funzione update stella già esistente
-function updateStella() {
-  
-  const newStella = db.push(scoreRef2);
-db.update(newStella, data);
-
 }
 
