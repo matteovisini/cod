@@ -36,14 +36,14 @@ let myLatStella;
 let myLngStella;
 
 // prime prove blob
-let velocitàStella = 100
+let velocitàStella = 200
 
 // prime prove blob
 let kMaxBlob;
 let kMaxNucleo
 let step;
 let n = 80; // number of blobs
-let n2 = 20; // number of blobs
+let n2 = 10; // number of blobs
 let radius = 0; // diameter of the circle
 let inter = 0.5; // difference between the sizes of two blobs
 let maxNoise  //grandezza
@@ -103,7 +103,6 @@ function getDiametro(data) {
   let singoloDiametro;
   diametri = data.val();
   keys = Object.keys(diametri);
-  maxNoise = 0;
   keys.forEach(function (key) {
 /*     console.log(
       key,
@@ -156,8 +155,8 @@ function setup() {
 
   colorMode(HSB);
 	angleMode(DEGREES);
-  kMaxBlob = random(0.1, 4.0);
-  kMaxNucleo = random(0.1, 2.0);
+  kMaxBlob = random(1.0, 4.0);
+  kMaxNucleo = random(0.1, 1.0);
   step = 0.01;
   myColor = random(0,360)
   
@@ -267,8 +266,7 @@ function drawStella() {
   for (let i = n; i > 0; i--) {
     strokeWeight(2);
     noFill();
-    let alpha = 1 - noiseProg(i / n);
-    stroke(myColor, 100, 90,0.2);
+    stroke(myColor, 100, 90,0.5);
 		let size = radius + i * inter;
 		let k = kMaxBlob * sqrt(i/n);
 		let noisiness = maxNoise * noiseProg(i / n);
