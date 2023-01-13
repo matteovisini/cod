@@ -82,7 +82,6 @@ let laptopAcc;
 function setup() {
   angleMode(DEGREES);
   createCanvas(windowWidth, windowHeight);
-  
 
   //set laptop location
   laptopLat = locationData.latitude;
@@ -113,7 +112,7 @@ function arraycreation() {
           }
         }
       });
-
+      console.log(sommacerchi);
       //push object
       cells.push(
         new blob(sommacerchi, stelle[key].latStella, stelle[key].lngStella)
@@ -128,7 +127,7 @@ function arraycreation() {
 
 function draw() {
   background(50, 89, 100);
- 
+  arraycreation();
   fill("white");
   //circle(width / 2, height / 2, 30);
   //stars.forEach(function (key) {

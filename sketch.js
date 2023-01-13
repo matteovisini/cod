@@ -87,18 +87,8 @@ function getDiametro(data) {
 function getStella(data) {
   stelle = data.val();
   stars = Object.keys(stelle);
-} 
-
- function submitStella(){
-  let data = {
-    latStella:laptopLat,
-    lngStella:laptopLng,
-    diametro:sommadiametri,
-
-  };
-  const newStella = db.push(scoreRef2);
-db.set(newStella, data);
 }
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
@@ -202,13 +192,18 @@ function checkStelle() {
   }
 }
 
+
+let starColor
+
 //funzione crea stella
-function submitStella(){
+function submitStella() {
+  starColor= random(360)
   let data = {
     latStella:laptopLat,
     lngStella:laptopLng,
-    diametro:sommadiametri,
-    check: 0,
+    diametro: sommadiametri,
+    starColor: starColor,
+    
 
   };
   const newStella = db.push(scoreRef2);

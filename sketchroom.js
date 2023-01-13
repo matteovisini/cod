@@ -4,9 +4,6 @@ let database;
 let scoreRef;
 let scoreRef2;
 
-//Variabile mousemove
-let movimouse = 0;
-
 //Dimesione Stella
 let sommadiametri;
 let keys = [];
@@ -17,7 +14,7 @@ let stars = [];
 
 //geolocation
 var locationData; //geolocation variable
-let RoundUp = 0.01; //geolocation round up
+let RoundUp = 1; //geolocation round up
 
 //noise variable
 let seed = 0;
@@ -51,6 +48,8 @@ let maxNoisenucleo  //grandezza nucleo
 let lapse = 0;    // timer
 let noiseProg = (x) => (x);
 let myColor 
+
+let movimouse 
 
 async function preload() {
   //geolocation function
@@ -131,17 +130,6 @@ function getStella(data) {
   });
 }
 
-//funzione crea stella
-function submitStella() {
-  let data = {
-    latStella: laptopLat,
-    lngStella: laptopLng,
-    diametro: sommadiametri,
-    check: 0,
-  };
-  const newStella = db.push(scoreRef2);
-  db.set(newStella, data);
-}
 
 //setup
 function setup() {
@@ -151,25 +139,56 @@ function setup() {
   lng = locationData.longitude;
   acc = locationData.accuracy;
   console.log("Your current position is:", lat, lng, "accuracy:", acc);
-  checkStelle();
-
+  movimouse = 0
   colorMode(HSB);
 	angleMode(DEGREES);
   kMaxBlob = random(1.0, 4.0);
   kMaxNucleo = random(0.1, 1.0);
   step = 0.01;
-  myColor = random(0,360)
   
 
 
 	kMaxCelle = random(0.1, 0.9);
   stepCelle = 0.01;
-  
+
 }
 
 function draw() {
   seed++;
   background("#1e1e1e");
+
+ /*   if (movimouse < 2) {
+     //set laptop location
+  laptopLat = locationData.latitude; //Cambia questo per forzare la tua lat
+  laptopLng = locationData.longitude; //Cambia questo per forzare la tua lng
+  laptopAcc = locationData.accuracy;
+
+  fine = 0; // se cambia, finisce il ciclo
+
+  if (stars) {
+    stars.forEach(function (key) {
+      myLatStella = stelle[key].latStella;
+      myLngStella = stelle[key].lngStella;
+
+      if (fine === 0) {
+        console.log("funzione");
+        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp)  {
+            console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
+            myColor =stelle[key].starColor;
+              fine = 1;
+            
+          }
+          else {
+          console.log("there's nothing here")
+        } ;
+        }
+    
+    })
+  }
+    movimouse ++
+  } */
+ 
+
   textSize(20);
   textAlign(CENTER, CENTER);
   fill("white");
@@ -179,7 +198,7 @@ function draw() {
   //rectMode(CENTER);
   //rect(width / 2, height / 2, sommadiametri, sommadiametri);
   drawStella()
-
+push()
   if (keys) {
     maxNoise = 0;
     keys.forEach(function (key) {
@@ -194,7 +213,7 @@ function draw() {
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
 
-      if (lat <= laptopLat + RoundUp && lat >= laptopLat - RoundUp) {
+      if (lat <= laptopLat + RoundUp && lat >= laptopLat - RoundUp ) {
         if (lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp) {
           let t = frameCount/150;
   let bright = 0;
@@ -228,6 +247,7 @@ function draw() {
       }
     });
   }
+pop()
 }
 
 
@@ -245,16 +265,18 @@ function checkStelle() {
       myLngStella = stelle[key].lngStella;
 
       if (fine === 0) {
-        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp) {
-          if (laptopLng >= myLngStella - RoundUp && laptopLng <= myLngStella + RoundUp) {
+        console.log("funzione");
+        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp)  {
             console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
-            fine = 1;
+            myColor =stelle[key].starColor;
+              fine = 1;
+            
           }
           else {
           console.log("there's nothing here")
         } ;
         }
-      }
+    
     })
   }
 }
@@ -321,10 +343,6 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
 }
 
 
-function Celle() {
-  
-}
-
 // By Roni Kaufman
 
 let kMaxCelle;
@@ -350,4 +368,19 @@ function cella(size, xCenter, yCenter, k, t, noisiness) {
     curveVertex(x, y);
   }
   endShape();
+}
+
+function mouseMoved() {
+  if (movimouse === 0) {
+    checkStelle()
+    movimouse = 1
+  }
+
+}  
+
+//resize page
+function windowResized(){
+  resizeCanvas(windowWidth, windowHeight)
+  wi = windowWidth / 2;
+  he = windowHeight / 2;
 }
