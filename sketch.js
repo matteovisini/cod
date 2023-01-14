@@ -93,8 +93,8 @@ function getStella(data) {
 
 
 function setup() {
-  fakeLat = random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
-  fakeLng = random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
+  fakeLat = 0 //random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
+  fakeLng = 0 //random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
   createCanvas(windowWidth, windowHeight - 100);
   colorMode(HSB);
   lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
