@@ -29,17 +29,8 @@ let stelleDatabase = 1;
 // Geolocation variables
 var locationData;
 let RoundUp = 0.01
-
-//funzione ricezione dati pianeti
-function getDiametro(data) {
-  diametri = data.val();
-  keys = Object.keys(diametri);
-}
-//funzione ricezione dati stelle
-function getStella(data) {
-  stelle = data.val();
-  stars = Object.keys(stelle);
-}
+let fakeLat //solo per cambiare velocemente, da togliere alla fine
+let fakeLng //solo per cambiare velocemente, da togliere alla fine
 
 async function preload() {
 
@@ -89,15 +80,25 @@ async function preload() {
   db.onValue(scoreRef2, getStella);
 }
 
-
+//funzione ricezione dati pianeti
+function getDiametro(data) {
+  diametri = data.val();
+  keys = Object.keys(diametri);
+}
+//funzione ricezione dati stelle
+function getStella(data) {
+  stelle = data.val();
+  stars = Object.keys(stelle);
+}
 
 
 function setup() {
+  fakeLat = random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
+  fakeLng = random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
   createCanvas(windowWidth, windowHeight - 100);
-  checkStelle()
   colorMode(HSB);
-  lat = locationData.latitude //Cambia questo per forzare la tua lat
-  lng = locationData.longitude //Cambia questo per forzare la tua lng
+  lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
+  lng = locationData.longitude +fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
 
@@ -197,15 +198,18 @@ function checkStelle() {
 
 
 let starColor
+let starType
 
 //funzione crea stella
 function submitStella() {
-  starColor= random(360)
+  starColor = random(360)
+  starType = random(0.1, 4.0)
   let data = {
     latStella:laptopLat,
     lngStella:laptopLng,
     diametro: sommadiametri,
     starColor: starColor,
+    starType: starType
     
 
   };

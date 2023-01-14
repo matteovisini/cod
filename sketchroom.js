@@ -19,9 +19,6 @@ let RoundUp = 0.01; //geolocation round up
 //noise variable
 let seed = 0;
 
-//object name
-let nomeutente;
-
 let laptopLat;
 let laptopLng;
 let laptopAcc;
@@ -36,20 +33,17 @@ let myLngStella;
 let velocitàStella = 200
 
 // prime prove blob
-let kMaxBlob;
-let kMaxNucleo
+let starType
 let step;
 let n = 80; // number of blobs
 let n2 = 10; // number of blobs
-let radius = 0; // diameter of the circle
+let radius = 01 // diameter of the circle
 let inter = 0.5; // difference between the sizes of two blobs
 let maxNoise  //grandezza
 let maxNoisenucleo  //grandezza nucleo
 let lapse = 0;    // timer
 let noiseProg = (x) => (x);
 let myColor 
-
-let movimouse 
 
 async function preload() {
   //geolocation function
@@ -106,7 +100,6 @@ function getDiametro(data) {
 
 function getStella(data) {
   //get incoming data
-  
   stelle = data.val();
   stars = Object.keys(stelle);
   checkStelle()
@@ -117,7 +110,6 @@ function getStella(data) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-    checkStelle();
   laptopLat = locationData.latitude;
   laptopLng = locationData.longitude;
   LaptopAcc = locationData.accuracy;
@@ -125,52 +117,49 @@ function setup() {
   
   colorMode(HSB);
 	angleMode(DEGREES);
-  kMaxBlob = random(1.0, 4.0);
-  kMaxNucleo = random(0.1, 1.0);
+  starType = 10
+
   step = 0.01;
   
 
 
 	kMaxCelle = random(0.1, 0.9);
   stepCelle = 0.01;
-
 }
 
 function draw() {
   seed++;
-  background("#1e1e1e");
+  background("#1e1e1e"); //background
   textSize(20);
   textAlign(CENTER, CENTER);
   fill("white");
   text("Ci sono " + keys.length + " utenti", width / 2, height / 2 - 200);
   fill("blue");
-  text("Utente: " + nomeutente, width / 2, height / 2 + 200);
-  //rectMode(CENTER);
-  //rect(width / 2, height / 2, sommadiametri, sommadiametri);
-  drawStella()
-push()
+
+  drawStella() //stella centrale
+
+  //celle 
+  push()
   if (keys) {
     maxNoise = 0;
     keys.forEach(function (key) {
-      fill(
-        diametri[key].v1,
-        diametri[key].v2,
-        diametri[key].v3,
-        100 - diametri[key].acc
-      );
+
+      //posizione e movimento celle
       let x = noise((seed + 1000 * diametri[key].v1) / 300) * windowWidth;
       let y = noise((seed - 1000 * diametri[key].v1) / 300) * windowHeight;
+        
+      //condizione prossimità
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
 
-      if (lat <= laptopLat + RoundUp && lat >= laptopLat - RoundUp ) {
-        if (lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp) {
-          let t = frameCount/150;
-  let bright = 0;
+      if ((lat <= laptopLat + RoundUp && lat >= laptopLat - RoundUp) && (lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp) ) {
+    
+        let t = frameCount / 150;
+        let bright = 0;
+
           for (let i = nCelle; i > 0; i--) {
             strokeWeight(1);
             stroke(250 + bright, 60, 70);
-    
             fill(250 + bright, 60, 70, alpha);
             let size = radiusCelle + i * interCelle;
             let k = kMaxCelle * sqrt(i / nCelle);
@@ -186,18 +175,13 @@ push()
           singoloDiametro = diametri[key].diametro;
           maxNoise = maxNoise + singoloDiametro;
           maxNoisenucleo = maxNoise/3
-        }
+        
       }
 
-      if (mouseIsPressed === true) {
-        var distance = dist(mouseX, mouseY, x, y);
-        if (distance < diametri[key].diametro) {
-          nomeutente = diametri[key].name;
-        }
-      }
+
     });
   }
-pop()
+  pop()
 }
 
 
@@ -213,7 +197,8 @@ function checkStelle() {
         console.log("funzione");
         if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && laptopLng <= laptopLng + RoundUp && laptopLng >= laptopLng - RoundUp)  {
             console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
-            myColor =stelle[key].starColor;
+          myColor = stelle[key].starColor;
+          starType = stelle[key].starType
               fine = 1;
             
           }
@@ -235,23 +220,23 @@ function drawStella() {
     noFill();
     stroke(myColor, 100, 90,0.5);
 		let size = radius + i * inter;
-		let k = kMaxBlob * sqrt(i/n);
+		let k = starType * sqrt(i/n);
 		let noisiness = maxNoise * noiseProg(i / n);
     blob(size, width/2, height/2, k, t - i * step, noisiness);
   }
   pop();
+
   //nucleo stella
   push();
   for (let i = n2; i > 0; i--) {
     let alpha = 1 - noiseProg(i / n2);
     strokeWeight(1);
-    step2 = 1;
     noStroke();
 		fill(myColor, 100, 70,alpha);
 		let size = radius + i * inter;
-		let k = kMaxNucleo * sqrt(i/n2);
+		let k = starType * sqrt(i/n2);
 		let noisiness = maxNoisenucleo * noiseProg(i / n2);
-    nucleo(size, width/2, height/2, k, t - i * step2, noisiness);
+    nucleo(size, width/2, height/2, k, t - i * step, noisiness);
   }
   pop();
 
