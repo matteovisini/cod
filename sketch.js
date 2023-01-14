@@ -30,6 +30,17 @@ let stelleDatabase = 1;
 var locationData;
 let RoundUp = 0.01
 
+//funzione ricezione dati pianeti
+function getDiametro(data) {
+  diametri = data.val();
+  keys = Object.keys(diametri);
+}
+//funzione ricezione dati stelle
+function getStella(data) {
+  stelle = data.val();
+  stars = Object.keys(stelle);
+}
+
 async function preload() {
 
   // Inizializzo Geolocalizzazione
@@ -78,20 +89,12 @@ async function preload() {
   db.onValue(scoreRef2, getStella);
 }
 
-//funzione ricezione dati pianeti
-function getDiametro(data) {
-  diametri = data.val();
-  keys = Object.keys(diametri);
-}
-//funzione ricezione dati stelle
-function getStella(data) {
-  stelle = data.val();
-  stars = Object.keys(stelle);
-}
+
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight - 100);
+  checkStelle()
   colorMode(HSB);
   lat = locationData.latitude //Cambia questo per forzare la tua lat
   lng = locationData.longitude //Cambia questo per forzare la tua lng

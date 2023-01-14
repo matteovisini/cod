@@ -14,7 +14,7 @@ let stars = [];
 
 //geolocation
 var locationData; //geolocation variable
-let RoundUp = 1; //geolocation round up
+let RoundUp = 0.01; //geolocation round up
 
 //noise variable
 let seed = 0;
@@ -102,32 +102,14 @@ function getDiametro(data) {
   let singoloDiametro;
   diametri = data.val();
   keys = Object.keys(diametri);
-  keys.forEach(function (key) {
-/*     console.log(
-      key,
-      diametri[key].name,
-      diametri[key].diametro,
-      diametri[key].v1,
-      diametri[key].v2,
-      diametri[key].v3,
-      diametri[key].lat,
-      diametri[key].lng,
-      diametri[key].acc
-    ); */
-    /* singoloDiametro = diametri[key].diametro;
-    sommadiametri = sommadiametri + singoloDiametro; */
-  });
 }
 
 function getStella(data) {
   //get incoming data
+  
   stelle = data.val();
   stars = Object.keys(stelle);
-
-  stars.forEach(function (key) {
-
-    //checkStelle();
-  });
+  checkStelle()
 }
 
 
@@ -135,11 +117,12 @@ function getStella(data) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  lat = locationData.latitude;
-  lng = locationData.longitude;
-  acc = locationData.accuracy;
-  console.log("Your current position is:", lat, lng, "accuracy:", acc);
-  movimouse = 0
+    checkStelle();
+  laptopLat = locationData.latitude;
+  laptopLng = locationData.longitude;
+  LaptopAcc = locationData.accuracy;
+  console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", LaptopAcc);
+  
   colorMode(HSB);
 	angleMode(DEGREES);
   kMaxBlob = random(1.0, 4.0);
@@ -156,39 +139,6 @@ function setup() {
 function draw() {
   seed++;
   background("#1e1e1e");
-
- /*   if (movimouse < 2) {
-     //set laptop location
-  laptopLat = locationData.latitude; //Cambia questo per forzare la tua lat
-  laptopLng = locationData.longitude; //Cambia questo per forzare la tua lng
-  laptopAcc = locationData.accuracy;
-
-  fine = 0; // se cambia, finisce il ciclo
-
-  if (stars) {
-    stars.forEach(function (key) {
-      myLatStella = stelle[key].latStella;
-      myLngStella = stelle[key].lngStella;
-
-      if (fine === 0) {
-        console.log("funzione");
-        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp)  {
-            console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
-            myColor =stelle[key].starColor;
-              fine = 1;
-            
-          }
-          else {
-          console.log("there's nothing here")
-        } ;
-        }
-    
-    })
-  }
-    movimouse ++
-  } */
- 
-
   textSize(20);
   textAlign(CENTER, CENTER);
   fill("white");
@@ -252,11 +202,6 @@ pop()
 
 
 function checkStelle() {
-  //set laptop location
-  laptopLat = locationData.latitude; //Cambia questo per forzare la tua lat
-  laptopLng = locationData.longitude; //Cambia questo per forzare la tua lng
-  laptopAcc = locationData.accuracy;
-
   fine = 0; // se cambia, finisce il ciclo
 
   if (stars) {
@@ -266,7 +211,7 @@ function checkStelle() {
 
       if (fine === 0) {
         console.log("funzione");
-        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp)  {
+        if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && laptopLng <= laptopLng + RoundUp && laptopLng >= laptopLng - RoundUp)  {
             console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
             myColor =stelle[key].starColor;
               fine = 1;
@@ -370,14 +315,14 @@ function cella(size, xCenter, yCenter, k, t, noisiness) {
   endShape();
 }
 
-function mouseMoved() {
+/* function mouseMoved() {
   if (movimouse === 0) {
     checkStelle()
     movimouse = 1
   }
 
 }  
-
+ */
 //resize page
 function windowResized(){
   resizeCanvas(windowWidth, windowHeight)
