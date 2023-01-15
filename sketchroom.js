@@ -33,17 +33,6 @@ let myLngStella;
 let velocitàStella = 200
 
 // prime prove blob
-let starType
-let step;
-let n = 80; // number of blobs
-let n2 = 10; // number of blobs
-let radius = 01 // diameter of the circle
-let inter = 0.5; // difference between the sizes of two blobs
-let maxNoise  //grandezza
-let maxNoisenucleo  //grandezza nucleo
-let lapse = 0;    // timer
-let noiseProg = (x) => (x);
-let myColor 
 
 async function preload() {
   //geolocation function
@@ -116,11 +105,11 @@ function setup() {
   console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", LaptopAcc);
   
   colorMode(HSB);
-	angleMode(DEGREES);
-  starType = 10
-
-  step = 0.01;
+  angleMode(DEGREES);
   
+  step = 0.01;
+  kMax = //random(0.1, 4.0);
+    
 
 
 	kMaxCelle = random(0.1, 0.9);
@@ -128,6 +117,8 @@ function setup() {
 }
 
 function draw() {
+
+
   seed++;
   background("#1e1e1e"); //background
   textSize(20);
@@ -135,9 +126,10 @@ function draw() {
   fill("white");
   text("Ci sono " + keys.length + " utenti", width / 2, height / 2 - 200);
   fill("blue");
-
+if (disegno === 1 ){
   drawStella() //stella centrale
 
+  }
   //celle 
   push()
   if (keys) {
@@ -174,7 +166,7 @@ function draw() {
           text(diametri[key].name, x, y - 20);
           singoloDiametro = diametri[key].diametro;
           maxNoise = maxNoise + singoloDiametro;
-          maxNoisenucleo = maxNoise/3
+          maxNoisenucleo = maxNoise/2
         
       }
 
@@ -184,6 +176,18 @@ function draw() {
   pop()
 }
 
+let kMax;
+let step;
+let n = 80; // number of blobs
+let n2 = n/5
+let radius = 0; // diameter of the circle
+let inter = 0.5; // difference between the sizes of two blobs
+let maxNoise  //grandezza
+let maxNoisenucleo //grandezza nucleo
+let lapse = 0;    // timer
+let noiseProg = (x) => (x);
+let myColor 
+let disegno 
 
 function checkStelle() {
   fine = 0; // se cambia, finisce il ciclo
@@ -198,8 +202,9 @@ function checkStelle() {
         if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && laptopLng <= laptopLng + RoundUp && laptopLng >= laptopLng - RoundUp)  {
             console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
           myColor = stelle[key].starColor;
-          starType = stelle[key].starType
-              fine = 1;
+          starType = 1 //stelle[key].starType
+          fine = 1;
+          disegno = 1
             
           }
           else {
@@ -211,14 +216,16 @@ function checkStelle() {
   }
 }
 
+
 function drawStella() {
-  //blob stella
+  //blob 
   push();
   let t = frameCount/velocitàStella;
   for (let i = n; i > 0; i--) {
     strokeWeight(2);
     noFill();
-    stroke(myColor, 100, 90,0.5);
+    let alpha = 1 - noiseProg(i / n);
+    stroke(myColor, 100, 90,0.2);
 		let size = radius + i * inter;
 		let k = starType * sqrt(i/n);
 		let noisiness = maxNoise * noiseProg(i / n);
@@ -226,17 +233,19 @@ function drawStella() {
   }
   pop();
 
-  //nucleo stella
+  // nucleo
   push();
+
   for (let i = n2; i > 0; i--) {
     let alpha = 1 - noiseProg(i / n2);
     strokeWeight(1);
+    step2 = 1;
     noStroke();
 		fill(myColor, 100, 70,alpha);
 		let size = radius + i * inter;
 		let k = starType * sqrt(i/n2);
 		let noisiness = maxNoisenucleo * noiseProg(i / n2);
-    nucleo(size, width/2, height/2, k, t - i * step, noisiness);
+    nucleo(size, width/2, height/2, k, t - i * step2, noisiness);
   }
   pop();
 
@@ -271,7 +280,6 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
   }
   endShape();
 }
-
 
 // By Roni Kaufman
 
