@@ -362,8 +362,4 @@ if (currentHour <= 12) {
     }
 }
   
-function windowResized(){
-  resizeCanvas(windowWidth, windowHeight)
-  wi = windowWidth / 2;
-  he = windowHeight / 2;
-}
+

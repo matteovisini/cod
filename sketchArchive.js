@@ -83,6 +83,7 @@ function setup() {
   angleMode(DEGREES);
   colorMode(HSB);
   createCanvas(windowWidth, windowHeight);
+   slider()
 
   //set laptop location
   laptopLat = locationData.latitude;
@@ -137,9 +138,18 @@ function arraycreation() {
 //let geoylaptop = 400;
 
 function draw() {
-  background("#1e1e1e"); //background
+  background("#cdcdcd"); //background
   arraycreation();
   fill("white");
+  scale = slider.value()*120
+  maxNoise = slider.value()
+  maxNoisenucleo = maxNoise / 2;
+  if (slider.value() < 30) {
+    inter = 0.2;
+  }
+  else {inter=0.5}
+  
+ 
   //circle(width / 2, height / 2, 30);
   //stars.forEach(function (key) {
   //});
@@ -150,14 +160,15 @@ let step;
 let n = 80; // number of blobs
 let n2 = n / 5;
 let radius = 0; // diameter of the circle
-let inter = 0.5; // difference between the sizes of two blobs
-let maxNoise = 200; //grandezza
-let maxNoisenucleo = maxNoise / 3; //grandezza nucleo
+let inter // difference between the sizes of two blobs
+let maxNoise //grandezza
+let maxNoisenucleo//grandezza nucleo
 let lapse = 0; // timer
 let noiseProg = (x) => x;
 //let myColor;
 let disegno;
 let velocitàStella = 200;
+let scale //= 1000;
 
 function drawStella(sx, sy, scolore, stipo, sommacerchi) {
   //blob
@@ -169,26 +180,28 @@ function drawStella(sx, sy, scolore, stipo, sommacerchi) {
   let ydiff = stellay - laptopLng;
   let diameter = sommacerchi;
   let d = dist(stellax, stellay, laptopLat, laptopLng);
-  let scale = 1000;
+  
   push();
-  stroke("white");
+  stroke("#4d4d4d");
   strokeWeight(0.1);
   noFill();
   
   circle(0, 0, d * 2 * scale);
   pop();
-
+  //blob 
   push();
-  
-  let t = frameCount / velocitàStella;
+  let t = frameCount/velocitàStella;
   for (let i = n; i > 0; i--) {
+    console.log ("blob sta disegnando")
     strokeWeight(2);
     noFill();
-    stroke(colore, 100, 90, 0.2);
-    let size = radius + i * inter;
-    let k = tipo * sqrt(i / n);
-    let noisiness = maxNoise * noiseProg(i / n);
-    blob(size, xdiff * scale, -1* ydiff * scale, k, t - i * step, noisiness);
+    step = 0.01
+    let alpha = 1 - noiseProg(i / n);
+    stroke(colore, 100, 90,0.2);
+		let size = radius + i * inter;
+		let k = tipo * sqrt(i/n);
+		let noisiness = maxNoise * noiseProg(i / n);
+    blob(size, xdiff * scale, ydiff * scale, k, t - i * step, noisiness);
   }
   pop();
 
@@ -211,12 +224,12 @@ function drawStella(sx, sy, scolore, stipo, sommacerchi) {
 
 function blob(size, xCenter, yCenter, k, t, noisiness) {
   beginShape();
-  let angleStep = 360 / 40;
+	let angleStep = 360 / 40;
   for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
     let r1, r2;
-    r1 = sin(theta);
-    r2 = cos(theta);
-    let r = size + noise(k * r1, k * r2, t) * noisiness;
+		r1 = sin(theta);
+		r2 = cos(theta);
+    let r = size + noise(k * r1,  k * r2, t) * noisiness;
     let x = xCenter + r * cos(theta);
     let y = yCenter + r * sin(theta);
     curveVertex(x, y);
@@ -243,4 +256,11 @@ function windowResized(){
   resizeCanvas(windowWidth, windowHeight)
   wi = windowWidth / 2;
   he = windowHeight / 2;
+}
+
+function slider() {
+  slider = createSlider(10, 80, 80);
+  slider.position( windowWidth - 100, windowHeight - 50);
+  slider.style('width', '80px');
+
 }

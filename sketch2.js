@@ -99,8 +99,8 @@ function setup() {
   fakeLng = 0 //random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
   createCanvas(windowWidth, windowHeight - 100);
   colorMode(HSB);
-  lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
-  lng = locationData.longitude +fakeLng//Cambia questo per forzare la tua lng
+  lat = locationData.latitude + 0.015//fakeLat//Cambia questo per forzare la tua lat
+  lng = locationData.longitude + 0.015// fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
   startingPos = random(255)
@@ -192,7 +192,7 @@ function checkStelle() {
 //funzione crea stella
 function submitStella() {
   starColor = random(360)
-  starType = round(random(0.5, 4.0))
+  starType = round(random(0.6, 10))
   let data = {
     
     latStella:laptopLat,
