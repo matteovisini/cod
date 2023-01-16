@@ -81,7 +81,7 @@ let laptopAcc;
 
 function setup() {
   angleMode(DEGREES);
-  colorMode(HSB)
+  colorMode(HSB);
   createCanvas(windowWidth, windowHeight);
 
   //set laptop location
@@ -99,7 +99,7 @@ function arraycreation() {
       sommacerchi = 0;
       let latstar = stelle[key].latStella;
       let lngstar = stelle[key].lngStella;
-      let starColor = stelle[key].starColor
+      //let starColor = stelle[key].starColor;
       keys.forEach(function (key) {
         //condizione se posizione è uguale a posizione stella
         if (
@@ -114,12 +114,20 @@ function arraycreation() {
           }
         }
       });
-      console.log(sommacerchi);
+      //console.log(sommacerchi);
       //push object
-      fill (starColor,)
-      cells.push(
-        new blobs(sommacerchi, stelle[key].latStella, stelle[key].lngStella)
+      //fill(starColor);
+      push();
+      translate(width / 2, height / 2);
+      rotate(270);
+      drawStella(
+        stelle[key].latStella,
+        stelle[key].lngStella,
+        stelle[key].starColor,
+        stelle[key].starType,
+        sommacerchi
       );
+      pop();
     });
   }
   //mousemovecheck = 1;
@@ -134,115 +142,81 @@ function draw() {
   fill("white");
   //circle(width / 2, height / 2, 30);
   //stars.forEach(function (key) {
-  for (let m = 0; m < cells.length; m++) {
-    push();
-    translate(width / 2, height / 2);
-    fill("white");
-    cells[m].radialtrace();
-    cells[m].display();
-    pop();
-  }
   //});
 }
 
-// Jitter class
-class blobs {
-  constructor(sommacerchi, x, y) {
-    //this.x = 500;
-    //this.y = 510;
-    this.x = x;
-    this.y = y;
-    this.diameter = sommacerchi;
-    this.pcx = laptopLat;
-    this.pcy = laptopLng;
-    this.rand1 = random(180, 270);
-    this.rand2 = random(0, 90);
-    this.rand3 = random(90, 180);
-    this.rand4 = random(0, -90);
-    this.xdiff = this.x - this.pcx;
-    this.ydiff = this.y - this.pcy;
-    this.d = dist(this.pcx, this.pcy, this.x, this.y);
-    // this.angle = atan(this.ydiff, this.xdiff) * (180 / 3, 14);
-    // this.angle = 0;
-  }
+let kMax;
+let step;
+let n = 80; // number of blobs
+let n2 = n / 5;
+let radius = 0; // diameter of the circle
+let inter = 0.5; // difference between the sizes of two blobs
+let maxNoise = 200; //grandezza
+let maxNoisenucleo = maxNoise / 3; //grandezza nucleo
+let lapse = 0; // timer
+let noiseProg = (x) => x;
+//let myColor;
+let disegno;
+let velocitàStella = 200;
 
-  radialtrace() {
-    //console.log("MAMMA MIA");
-    push();
-    stroke("white");
-    strokeWeight(0.1);
-    noFill();
-    circle(0, 0, this.d * 2 * 8);
-    pop();
-    //this.x += random(-this.speed, this.speed);
-    // this.y += random(-this.speed, this.speed);
-  }
-
-  display() {
-    push();
-    //rotate(0);
-    /* if (this.xdiff < 0 && this.ydiff < 0) {
-      rotate(this.angle);
-    }
-    if (this.xdiff > 0 && this.ydiff > 0) {
-      rotate(this.angle);
-    }
-    if (this.xdiff < 0 && this.ydiff > 0) {
-      rotate(this.angle);
-    }
-    if (this.xdiff > 0 && this.ydiff < 0) {
-      rotate(this.angle);
-    } */
-    fill("white");
-    stroke("red");
-    strokeWeight(1);
-    // line(0, 0, this.d / 2, 0);
-    ellipse(this.xdiff * 8,this.ydiff * 8,this.diameter / 5,this.diameter / 5
-    );
-
-    pop();
-  }
-}
-
-function drawStella() {
-  //blob stella
+function drawStella(sx, sy, scolore, stipo, sommacerchi) {
+  //blob
+  let stellax = sx;
+  let stellay = sy;
+  let colore = scolore;
+  let tipo = stipo;
+  let xdiff = stellax - laptopLat;
+  let ydiff = stellay - laptopLng;
+  let diameter = sommacerchi;
+  let d = dist(stellax, stellay, laptopLat, laptopLng);
+  let scale = 1000;
   push();
-  let t = frameCount/velocitàStella;
+  stroke("white");
+  strokeWeight(0.1);
+  noFill();
+  
+  circle(0, 0, d * 2 * scale);
+  pop();
+
+  push();
+  
+  let t = frameCount / velocitàStella;
   for (let i = n; i > 0; i--) {
     strokeWeight(2);
     noFill();
-    stroke(myColor, 100, 90,0.5);
-		let size = radius + i * inter;
-		let k = starType 
-		let noisiness = maxNoise * noiseProg(i / n);
-    blob(size, width/2, height/2, k, t - i * step, noisiness);
+    stroke(colore, 100, 90, 0.2);
+    let size = radius + i * inter;
+    let k = tipo * sqrt(i / n);
+    let noisiness = maxNoise * noiseProg(i / n);
+    blob(size, xdiff * scale, -1* ydiff * scale, k, t - i * step, noisiness);
   }
   pop();
 
-  //nucleo stella
+  // nucleo
   push();
+
   for (let i = n2; i > 0; i--) {
-    let alpha = 1 - noiseProg(i / (n2));
+    let alpha = 1 - noiseProg(i / n2);
     strokeWeight(1);
+    step2 = 1;
     noStroke();
-		fill(myColor, 100, 70,alpha);
-		let size = radius + i * inter;
-		let k = starType 
-		let noisinessNucleo = maxNoisenucleo * noiseProg(i / n2);
-    nucleo(size, width/2, height/2, k, t - i * step, noisinessNucleo);
+    fill(colore, 100, 70, alpha);
+    let size = radius + i * inter;
+    let k = tipo * sqrt(i / n2);
+    let noisiness = maxNoisenucleo * noiseProg(i / n2);
+    nucleo(size, xdiff * scale, ydiff * scale, k, t - i * step2, noisiness);
   }
   pop();
-
 }
 
 function blob(size, xCenter, yCenter, k, t, noisiness) {
   beginShape();
-	let angleStep = 360 / 40;
+  let angleStep = 360 / 40;
   for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
     let r1, r2;
-		r1 = sin(theta);
-		r2 = cos(theta);
-    let r = size + noise(k * r1,  k * r2, t) * noisiness;
+    r1 = sin(theta);
+    r2 = cos(theta);
+    let r = size + noise(k * r1, k * r2, t) * noisiness;
     let x = xCenter + r * cos(theta);
     let y = yCenter + r * sin(theta);
     curveVertex(x, y);
@@ -250,29 +224,23 @@ function blob(size, xCenter, yCenter, k, t, noisiness) {
   endShape();
 }
 
-function nucleo(size, xCenter, yCenter, k, t, noisinessNucleo) {
+function nucleo(size, xCenter, yCenter, k, t, noisiness) {
   beginShape();
-	let angleStep = 360 / 120;
+  let angleStep = 360 / 120;
   for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
     let r1, r2;
-		r1 = cos(theta)*2;
-		r2 = sin(theta)*2;
-    let r = size + noise(k * r1,  k * r2, t) * noisinessNucleo;
+    r1 = cos(theta) * 2;
+    r2 = sin(theta) * 2;
+    let r = size + noise(k * r1, k * r2, t) * noisiness;
     let x = xCenter + r * cos(theta);
     let y = yCenter + r * sin(theta);
     curveVertex(x, y);
   }
   endShape();
-} 
+}
 
-let starType
-let step;
-let n = 80; // number of blobs
-let n2 = 10; // number of blobs
-let radius = 0 // diameter of the circle
-let inter = 0.5; // difference between the sizes of two blobs
-let maxNoise  //grandezza
-let maxNoisenucleo  //grandezza nucleo
-let lapse = 0;    // timer
-let noiseProg = (x) => (x);
-let myColor 
+function windowResized(){
+  resizeCanvas(windowWidth, windowHeight)
+  wi = windowWidth / 2;
+  he = windowHeight / 2;
+}

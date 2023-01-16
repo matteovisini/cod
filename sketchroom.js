@@ -28,6 +28,7 @@ let fine; // se cambia, finisce il ciclo
 
 let myLatStella;
 let myLngStella;
+let singoloDiametro;
 
 // prime prove blob
 let velocitàStella = 200
@@ -82,7 +83,7 @@ function getDiametro(data) {
   //get incoming data
   let somma;
   let incremento;
-  let singoloDiametro;
+  
   diametri = data.val();
   keys = Object.keys(diametri);
 }
@@ -102,7 +103,7 @@ function setup() {
   laptopLat = locationData.latitude;
   laptopLng = locationData.longitude;
   LaptopAcc = locationData.accuracy;
-  console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", LaptopAcc);
+  console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", laptopAcc);
   
   colorMode(HSB);
   angleMode(DEGREES);
@@ -115,9 +116,15 @@ function setup() {
 	kMaxCelle = random(0.1, 0.9);
   stepCelle = 0.01;
 }
+let prova = 0
 
+let incrementoBright
+ 
 function draw() {
-
+  if (prova < 20){
+    checkStelle()
+    prova++
+    }
 
   seed++;
   background("#1e1e1e"); //background
@@ -126,38 +133,45 @@ function draw() {
   fill("white");
   text("Ci sono " + keys.length + " utenti", width / 2, height / 2 - 200);
   fill("blue");
-if (disegno === 1 ){
+  if (disegno === 1) {
+  push()
   drawStella() //stella centrale
-
+pop ()
   }
   //celle 
   push()
   if (keys) {
-    maxNoise = 0;
+    maxNoise = 400;
     keys.forEach(function (key) {
 
       //posizione e movimento celle
-      let x = noise((seed + 1000 * diametri[key].v1) / 300) * windowWidth;
-      let y = noise((seed - 1000 * diametri[key].v1) / 300) * windowHeight;
+      let x = noise((seed + 1000 * diametri[key].startingPos) / 300) * windowWidth;
+      let y = noise((seed - 1000 * diametri[key].startingPos) / 300) * windowHeight;
+      let cellColor = diametri[key].cellColor
         
       //condizione prossimità
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
+      //currentHour = diametri[key].currentHour;
 
       if ((lat <= laptopLat + RoundUp && lat >= laptopLat - RoundUp) && (lng <= laptopLng + RoundUp && lng >= laptopLng - RoundUp) ) {
     
-        let t = frameCount / 150;
-        let bright = 0;
+        let t = frameCount / 250;
+        
 
+        oraEsatta()
+        let bright = 0;
+        
           for (let i = nCelle; i > 0; i--) {
             strokeWeight(1);
-            stroke(250 + bright, 60, 70);
-            fill(250 + bright, 60, 70, alpha);
+            noStroke();
+            fill(cellColor, 60-bright, 70+bright);
             let size = radiusCelle + i * interCelle;
             let k = kMaxCelle * sqrt(i / nCelle);
-            let noisiness = maxNoiseCelle * (i / nCelle);
-            cella(size, x, y, k, t - i * step, noisiness);
-            bright = bright + 4 * 1.5
+            let noisiness = maxNoiseCelle * (i / nCelle) * (random(0.2));
+            cell(size, x, y, k, t - i * step, noisiness);
+            //bright = bright+incrementoBright
+            bright = bright+diametri[key].currentHour;
           }
 
           //circle(x, y, diametri[key].diametro);
@@ -202,7 +216,7 @@ function checkStelle() {
         if (laptopLat >= myLatStella - RoundUp && laptopLat <= myLatStella + RoundUp && laptopLng <= laptopLng + RoundUp && laptopLng >= laptopLng - RoundUp)  {
             console.log("Your closest star is:", laptopLat, laptopLng, laptopAcc);
           myColor = stelle[key].starColor;
-          starType = 1 //stelle[key].starType
+          starType = stelle[key].starType
           fine = 1;
           disegno = 1
             
@@ -285,21 +299,21 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
 
 let kMaxCelle;
 let stepCelle;
-let nCelle = 10; // number of blobs
+let nCelle = 5; // number of blobs
 let radiusCelle = 0; // diameter of the circle
 let interCelle = 2; // difference between the sizes of two blobs
-let maxNoiseCelle = 20;  //grandezza
+let maxNoiseCelle = 25;  //grandezza
 let lapseCelle = 0;    // timer
 let noiseProgCelle = (x) => (x);
 
 
-function cella(size, xCenter, yCenter, k, t, noisiness) {
+function cell(size, xCenter, yCenter, k, t, noisiness) {
   beginShape();
-	let angleStep = 360/60;
+	let angleStep = 360/200;
   for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
     let r1, r2;
-		r1 = cos(theta)*2;
-		r2 = sin(theta);
+		r1 = cos(theta)+2*10;
+		r2 = sin(theta)+2*10;
     let r = size + noise(k * r1,  k * r2, t) * noisiness;
     let x = xCenter + r * cos(theta);
     let y = yCenter + r * sin(theta);
@@ -307,6 +321,7 @@ function cella(size, xCenter, yCenter, k, t, noisiness) {
   }
   endShape();
 }
+
 
 /* function mouseMoved() {
   if (movimouse === 0) {
@@ -317,6 +332,36 @@ function cella(size, xCenter, yCenter, k, t, noisiness) {
 }  
  */
 //resize page
+function windowResized(){
+  resizeCanvas(windowWidth, windowHeight)
+  wi = windowWidth / 2;
+  he = windowHeight / 2;
+}
+
+function oraEsatta() {
+  currentHour = hour();
+if (currentHour <= 12) {
+    incrementoBright = random(4)
+    if (incrementoBright <= 2) {incrementoBright = random(4) }
+  }
+
+  if (currentHour > 12 && currentHour < 16) {
+    incrementoBright = random(4,8)
+  }
+
+  if (currentHour >= 16 && currentHour <= 20) {
+    incrementoBright = random(-4)
+    if (incrementoBright <= -2) {
+      incrementoBright = random(-4)
+    }
+    }
+  
+    if (currentHour > 20 && currentHour < 23) {
+      incrementoBright = random(-4, -8)
+  
+    }
+}
+  
 function windowResized(){
   resizeCanvas(windowWidth, windowHeight)
   wi = windowWidth / 2;

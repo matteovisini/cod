@@ -18,7 +18,6 @@ function setup() {
   myColor = random(0,360)
 }
 
-
 function drawStella() {
   push();
   background(255);
