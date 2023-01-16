@@ -126,6 +126,7 @@ function arraycreation() {
         stelle[key].lngStella,
         stelle[key].starColor,
         stelle[key].starType,
+        stelle[key].starBrightness,
         sommacerchi
       );
       pop();
@@ -138,13 +139,13 @@ function arraycreation() {
 //let geoylaptop = 400;
 
 function draw() {
-  background("#cdcdcd"); //background
+  background("#ededed"); //background
   arraycreation();
   fill("white");
   scale = slider.value()*120
   maxNoise = slider.value()
   maxNoisenucleo = maxNoise / 2;
-  if (slider.value() < 30) {
+  if (slider.value() < 40) {
     inter = 0.2;
   }
   else {inter=0.5}
@@ -170,12 +171,13 @@ let disegno;
 let velocitàStella = 200;
 let scale //= 1000;
 
-function drawStella(sx, sy, scolore, stipo, sommacerchi) {
+function drawStella(sx, sy, scolore,stipo,sbrightness, sommacerchi) {
   //blob
   let stellax = sx;
   let stellay = sy;
   let colore = scolore;
   let tipo = stipo;
+  let brightness = sbrightness;
   let xdiff = stellax - laptopLat;
   let ydiff = stellay - laptopLng;
   let diameter = sommacerchi;
@@ -197,7 +199,7 @@ function drawStella(sx, sy, scolore, stipo, sommacerchi) {
     noFill();
     step = 0.01
     let alpha = 1 - noiseProg(i / n);
-    stroke(colore, 100, 90,0.2);
+    stroke(colore, 100, brightness,0.2);
 		let size = radius + i * inter;
 		let k = tipo * sqrt(i/n);
 		let noisiness = maxNoise * noiseProg(i / n);
@@ -213,7 +215,7 @@ function drawStella(sx, sy, scolore, stipo, sommacerchi) {
     strokeWeight(1);
     step2 = 1;
     noStroke();
-    fill(colore, 100, 70, alpha);
+    fill(colore, 100, brightness-10, alpha);
     let size = radius + i * inter;
     let k = tipo * sqrt(i / n2);
     let noisiness = maxNoisenucleo * noiseProg(i / n2);

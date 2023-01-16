@@ -127,7 +127,7 @@ function draw() {
     }
 
   seed++;
-  background("#1e1e1e"); //background
+  background("#ededed"); //background
   textSize(20);
   textAlign(CENTER, CENTER);
   fill("white");

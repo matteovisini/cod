@@ -95,12 +95,13 @@ function getStella(data) {
 }
 
 function setup() {
-  fakeLat = 0 //random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
-  fakeLng = 0 //random (-30, +30)//solo per cambiare velocemente, da togliere alla fine
+  fakeLat = 0 //+ random (-0.1, +0.1)//solo per cambiare velocemente, da togliere alla fine
+  fakeLng = 0 //+ random (-0.1, +0.1)//solo per cambiare velocemente, da togliere alla fine
+  
   createCanvas(windowWidth, windowHeight - 100);
   colorMode(HSB);
-  lat = locationData.latitude + 0.015//fakeLat//Cambia questo per forzare la tua lat
-  lng = locationData.longitude + 0.015// fakeLng//Cambia questo per forzare la tua lng
+  lat = locationData.latitude +fakeLat//Cambia questo per forzare la tua lat
+  lng = locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
   startingPos = random(255)
@@ -141,6 +142,7 @@ function draw() {
 
 
 let starColor
+let starBrightness
 let starType
 
 //funzione check se stella con quella posizione è già nel database
@@ -191,14 +193,18 @@ function checkStelle() {
 
 //funzione crea stella
 function submitStella() {
-  starColor = random(360)
-  starType = round(random(0.6, 10))
+  starColor = round(random(18)) * 20;
+  starBrightness = round (random(60,80))
+  //starColor = round(random(180))+round(random(180))
+  
+  starType = round(random(0.6,6))
   let data = {
     
     latStella:laptopLat,
     lngStella: laptopLng,
     accStella: laptopAcc,
     starColor: starColor,
+    starBrightness:starBrightness,
     starType: starType
     
 
@@ -286,7 +292,7 @@ function cell(size, xCenter, yCenter, k, t, noisiness) {
 //change color on tap
 function mouseClicked() {
   if (mouseY <= windowHeight - 100 ){
-    cellColor = random(360);
+    cellColor = round(random(36))*10;
     oraEsatta()
   }
 
