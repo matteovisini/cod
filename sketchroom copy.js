@@ -100,8 +100,8 @@ function getStella(data) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  laptopLat = locationData.latitude+0.01;
-  laptopLng = locationData.longitude+0.01;;
+  laptopLat = locationData.latitude;
+  laptopLng = locationData.longitude;
   LaptopAcc = locationData.accuracy;
   console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", laptopAcc);
   
@@ -295,6 +295,7 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
   endShape();
 }
 
+// By Roni Kaufman
 
 let kMaxCelle;
 let stepCelle;

@@ -2,7 +2,7 @@
 let nameInput;
 let submitButton;
 let button;
-let diametro;
+let diametro 
 
 // firebase global variables
 let db;
@@ -95,12 +95,12 @@ function getStella(data) {
 }
 
 function setup() {
-  fakeLat = 0 //+ random (-0.1, +0.1)//solo per cambiare velocemente, da togliere alla fine
-  fakeLng = 0 //+ random (-0.1, +0.1)//solo per cambiare velocemente, da togliere alla fine
+  fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
+  fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   
   createCanvas(windowWidth, windowHeight - 100);
   colorMode(HSB);
-  lat = locationData.latitude +fakeLat//Cambia questo per forzare la tua lat
+  lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
   lng = locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
@@ -121,6 +121,8 @@ function setup() {
 	kMax = random(0.2, 0.3);
 	step = 0.01;
   cellColor = random(360); 
+  cellDimension = round(random(10))
+
   rand = random(7);
 
   
@@ -129,7 +131,7 @@ function setup() {
 var currentYear = year();
   var currentMonth = month();
   var currentDay = day();
- currentDate = currentYear + '-' + nf(currentMonth, 2) + '-' + nf(currentDay, 2);
+ currentDate =  nf(currentMonth, 2) + '-' + nf(currentDay, 2) + '-' + currentYear ;
   console.log(currentDate)
 }
 
@@ -190,22 +192,44 @@ function checkStelle() {
     }
   }
 }
-
+let starName
 //funzione crea stella
 function submitStella() {
   starColor = round(random(18)) * 20;
   starBrightness = round (random(60,80))
   //starColor = round(random(180))+round(random(180))
+  starType = random(0.6, 6)
   
-  starType = round(random(0.6,6))
+
+  switch (round(starType)) {
+    case 1:
+      starName = "Malassezia furfur"
+      break;
+    case 2:
+      starName = "Entomophaga maimaiga"
+      break;
+    case 3:
+      starName = "Aspergillus aculeatinus"
+      break;
+    case 4:
+      starName = "Trichophyton rubrum"
+    case 5:
+      starName = "Piptocephalidaceae"
+    case 6:
+      starName = "Chondrostereum purpureum"
+      
+      break;
+  }
   let data = {
-    
+    creatorName:nameInput.value(),
+    creationDate: currentDate,
     latStella:laptopLat,
     lngStella: laptopLng,
     accStella: laptopAcc,
     starColor: starColor,
     starBrightness:starBrightness,
-    starType: starType
+    starType: starType,
+    starName:starName
     
 
   };
@@ -224,12 +248,13 @@ function submitDiametro() {
     name: nameInput.value(),
     startingPos: startingPos,
     creationDate: currentDate,
-    currentHour: currentHour,
+    incrementoBright: incrementoBright,
     cellColor: cellColor,
+    cellDimension:cellDimension,
     diametro: diametro,
     lat: lat,
     lng: lng,
-    acc: acc,
+    acc: acc
 
   };
 
@@ -252,14 +277,17 @@ let step;
 let n = 10; // number of blobs
 let radius = 0; // diameter of the circle
 let inter = 0; // difference between the sizes of two blobs
-let maxNoise = 500;  //grandezza
+let maxNoise ;  //grandezza
 let lapse = 0;    // timer
 let cellColor;
 let rand;
 let incrementoBright 
+let cellDimension
 
 function drawCella() {
   background("#1e1e1e");
+  maxNoise = 300 + (cellDimension*10)
+
   let t = frameCount/80;
   let bright = 0;
   for (let i = n; i > 0; i--) {
@@ -294,6 +322,7 @@ function mouseClicked() {
   if (mouseY <= windowHeight - 100 ){
     cellColor = round(random(36))*10;
     oraEsatta()
+    cellDimension = round(random(20))
   }
 
 }
@@ -316,7 +345,7 @@ if (currentHour <= 12) {
     }
     }
   
-    if (currentHour > 20 && currentHour < 23) {
+    if (currentHour > 20 && currentHour <= 23) {
       incrementoBright = random(-4, -8)
   
     }
@@ -329,14 +358,6 @@ function windowResized(){
   wi = windowWidth / 2;
   he = windowHeight / 2;
 }
-
-
-/*  
-distanza - startingPos
-
-bright - tempo creazione 
-
-*/
 
 
 /* function atTime() {
@@ -361,3 +382,5 @@ const daysDiff = Math.round(differenceBtwDates / aDayInMs)
 console.log(daysDiff)
 }
  */
+
+
