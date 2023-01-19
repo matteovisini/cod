@@ -35,7 +35,7 @@ let startingPos
 let creationDate
 let currentDate
  
-let threshold = 30
+let threshold = 100
 
 
 
@@ -171,6 +171,11 @@ function draw() {
   if (cellDimension < 1) {
     shaky =0
   }
+
+  if (mouseIsPressed === true) {
+  mutate()
+  
+}
 }
 
 
@@ -300,10 +305,11 @@ function submitDiametro() {
 
 //change color on tap
 let shaky 
-function mouseClicked() {
+
+
+function mutate() {
 
     //cellColor = round(random(36))*10;
-    oraEsatta()
   cellColor++
   
   //submitDiametro()
@@ -312,12 +318,12 @@ function mouseClicked() {
   }
     
   if (shaky ===0 ) {
-    cellDimension++
+    cellDimension  = cellDimension +0.5
 
   }
 
   if (shaky ===1) {
-    cellDimension = cellDimension -1
+    cellDimension = cellDimension -0.5
   }
 console.log(shaky)
 }
@@ -325,8 +331,7 @@ console.log(shaky)
 function oraEsatta() {
   currentHour = hour();
 if (currentHour <= 12) {
-    incrementoBright = random(4)
-    if (incrementoBright <= 2) {incrementoBright = random(4) }
+    incrementoBright = random(1,4)
   }
 
   if (currentHour > 12 && currentHour < 16) {
@@ -334,10 +339,7 @@ if (currentHour <= 12) {
   }
 
   if (currentHour >= 16 && currentHour <= 20) {
-    incrementoBright = random(-4)
-    if (incrementoBright <= -2) {
-      incrementoBright = random(-4)
-    }
+    incrementoBright = random(-1,-4)
     }
   
     if (currentHour > 20 && currentHour <= 23) {
@@ -377,29 +379,19 @@ const daysDiff = Math.round(differenceBtwDates / aDayInMs)
 console.log(daysDiff)
 }
  */
+let tap = 0
+let shakeSafe = 1
 
-
+function mouseClicked() {
+  tap ++
+}
 function deviceShaken() {
 
-   cellColor++
-  oraEsatta()
-  //submitDiametro()
-  if (cellColor >= 360) {
-    cellColor = 0
+  if (tap > 4 && shakeSafe === 1){
+    submitDiametro()
+    shakeSafe ++ 
   }
     
-  if (shaky ===0 ) {
-    cellDimension++
-
-  }
-
-  if (shaky ===1) {
-    cellDimension = cellDimension -1
-  }
-console.log(shaky)
-    
-  
-
 }
 
 
@@ -442,3 +434,4 @@ function touchEnded(event) {
 		DeviceOrientationEvent.requestPermission()
 	}
 }
+
