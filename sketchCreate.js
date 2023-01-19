@@ -35,9 +35,10 @@ let startingPos
 let creationDate
 let currentDate
  
-let threshold = 100
+let threshold = 50
 
-
+let myFont
+let myFontLight
 
 let kMax;
 let step;
@@ -124,7 +125,10 @@ let canva =createCanvas(windowWidth, windowHeight);
   lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
   lng = locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
-  console.log("Your current position is:",lat,lng,"accuracy:",acc)
+  console.log("Your current position is:", lat, lng, "accuracy:", acc)
+  
+    myFont = loadFont("assets/Replica Regular.otf");
+  myFontLight = loadFont("assets/Replica Light.otf");
   startingPos = random(255)
   diametro = 5;
    shaky =0 
@@ -166,7 +170,6 @@ function draw() {
   textSize(100);
   circle(width / 2, height / 2, diametro);
   drawCella()
-
    if (cellDimension > 15) {
     shaky =1 
   }
@@ -175,9 +178,11 @@ function draw() {
   }
 
   if (mouseIsPressed === true) {
-  mutate()
+    mutate()
   
-}
+  }
+  
+   
 }
 
 
@@ -389,17 +394,38 @@ function mouseClicked() {
 }
 function deviceShaken() {
 
-  if (tap > 4 && shakeSafe === 1){
+  shakeSafe++ 
+  if (shakesafe === 5){
     submitDiametro()
-    shakeSafe ++ 
+    afterShake()
+
   }
-    
+
 }
+
+function afterShake() {
+  
+  background("#101010");
+  textSize(20)
+textFont(myFont);
+  let divshake = select('#divshake');
+  divshake.style("display", "block");
+ 
+
+  
+  let textShake = select("#textShake")
+
+  document.getElementById("textShake").innerHTML = nameInput.value() + " has infested parasite located in: " + round(lat, 7) + ", " + round(lng, 7) + "<br> <br> Click on the QR code on your laptop"
+  
+  "Click on the QR code on your laptop"
+}
+ 
+
 
 
 
 function drawCella() {
-  background("#1e1e1e");
+  background("#101010");
   maxNoise = 300 + (cellDimension*20)
 
   let t = frameCount/80;

@@ -518,3 +518,38 @@ canvas {
   margin-top: 45vh;
   z-index: 8;
 }
+
+
+ div.load {
+  position: absolute;
+  background-color: #ededed;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  z-index: 20;
+}
+
+img.load {
+  width: 12vh;
+  margin-top: 40vh;
+  animation: roll;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+p.load {
+  color: #ff1f53;
+  font-size: 3vh;
+  margin-top: 4vh;
+  font-family: replica-reg;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
