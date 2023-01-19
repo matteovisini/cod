@@ -7,11 +7,14 @@
   src: url(font/Replica\ Light.otf);
 }
 
+html,
 body {
-  background-color: transparent;
-  color: #1b1b1b;
+  user-select: none;
+  min-height: 100%;
   overflow: hidden;
-  font-family: replica-light;
+  touch-action: pan-y;
+  margin: 0;
+  padding: 0;
 }
 
 ::-webkit-scrollbar {
