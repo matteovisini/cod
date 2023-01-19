@@ -283,7 +283,7 @@ function draw() {
     );
 
     text(
-      "THE MOTHER PARASITE",
+      "THIS PARASITE",
       (height / 100) * 16,
       windowHeight - (height / 100) * 6.5
     );
@@ -301,7 +301,7 @@ function draw() {
     windowHeight - (height / 100) * 16
   );
   text(
-    "FIRST SPORE: " + cellName,
+    "FIRST CELL: " + cellName,
     (height / 100) * 4,
     windowHeight - (height / 100) * 13
   );

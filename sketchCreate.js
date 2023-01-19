@@ -140,9 +140,6 @@ let canva =createCanvas(windowWidth, windowHeight);
   nameInput =createInput("Undefined cell #"+undefinedCell);
   nameInput.parent("nameInput");
 
-  submitButton = createButton("submit");
-  submitButton.mousePressed(submitDiametro);
- 
 
   //randomcolor
   startingPoint = random(255);
