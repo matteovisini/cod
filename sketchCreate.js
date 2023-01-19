@@ -395,3 +395,9 @@ console.log(daysDiff)
  */
 
 
+//request permission on IOS
+function touchEnded(event) {
+	if(DeviceOrientationEvent && DeviceOrientationEvent.requestPermission){
+		DeviceOrientationEvent.requestPermission()
+	}
+}
