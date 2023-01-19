@@ -98,7 +98,8 @@ function setup() {
   fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   
-  createCanvas(windowWidth, windowHeight - 100);
+let canva =createCanvas(windowWidth, windowHeight);
+  canva.parent("canvasp5");
   colorMode(HSB);
   lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
   lng = locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
@@ -110,7 +111,12 @@ function setup() {
   createP("Click the button to get points");
   button = createButton("click");
   button.mousePressed(increaseDiametro); // aumento diametro
-  nameInput = createInput("name");
+
+  nameInput =createInput();
+  nameInput.parent("nameInput");
+
+  nameInput.attribute("required")
+
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
  
@@ -121,7 +127,7 @@ function setup() {
 	kMax = random(0.2, 0.3);
 	step = 0.01;
   cellColor = random(360); 
-  cellDimension = round(random(10))
+  cellDimension = round(random(20))
 
   rand = random(7);
 
@@ -286,7 +292,7 @@ let cellDimension
 
 function drawCella() {
   background("#1e1e1e");
-  maxNoise = 300 + (cellDimension*10)
+  maxNoise = 300 + (cellDimension*20)
 
   let t = frameCount/80;
   let bright = 0;
@@ -323,6 +329,7 @@ function mouseClicked() {
     cellColor = round(random(36))*10;
     oraEsatta()
     cellDimension = round(random(20))
+    submitDiametro()
   }
 
 }

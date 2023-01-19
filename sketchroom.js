@@ -100,8 +100,8 @@ function getStella(data) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  laptopLat = locationData.latitude+0.01;
-  laptopLng = locationData.longitude+0.01;;
+  laptopLat = locationData.latitude
+  laptopLng = locationData.longitude;
   LaptopAcc = locationData.accuracy;
   console.log("Your current position is:", laptopLat, laptopLng, "accuracy:", laptopAcc);
   
@@ -361,4 +361,11 @@ if (currentHour <= 12) {
     }
 }
   
+mouse
 
+function openEmail() {
+  window.reload()
+  location.reload();location.href='http://example.com';
+    }
+  
+let scroll = 0 

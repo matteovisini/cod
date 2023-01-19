@@ -4,11 +4,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
     <script src="libraries/p5.geolocation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="stylehome.css" />
     <meta charset="utf-8" />
   </head>
   <body>
     <main></main>
     <script src="sketchArchive.js"></script>
-  </body>
+
+
+
+
+
+  <div class="navbar">
+    <div class="navlogo">
+      <a href="home.html"><img class="logo" src="assets/logonavbarBlack.svg" /></a>
+    </div>
+    <div class="navbox">
+      <div class="navb"><a href="#Archivepage">MICROVERSE</a></div>
+      <div onmouseleave="noabout()" style="all:unset">
+        <div class="navb" onmouseover="about()"><a href="#popup">ABOUT</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="canvasp5" class="canvasp5"></div>
+  <div class="about" id="about">
+    <div class="aboutbox" style="margin-top: 10vh">
+      <div class="testiabout" style="color: white; background-color:rgb(183, 158, 47) ;">
+        Technology is often perceived as invisible and untouchable, as
+        something that connects everyone even miles away. PARASITE reveals the
+        proliferation of connection, placing a geographic barrier to users
+        who, only if within the same boundary, will be able to see their
+        simultaneous presence through the metaphor of microorganisms. <br><br> The
+        entire space of the website is constructed from the users' locations;
+        what the user sees of all other mother cells outside its boundaries,
+        is only an archive of the footprint of other activities.
+      </div>
+
+      <div class="testiabout" style="background-color: #78c08b; color: white;">
+        <p style="font-family: replica-reg;">THE TEAM</p>
+        <p>PARASITE does not represent only the simulation of the behaviour of microorganisms. PARASITE is also an
+          academic project designed during the Creative Coding Course in Politecnico di Milano. </p>
+        <p><br>Cecilia Buonocunto <br>
+          Deborah Franceschini <br>
+          Giulia Zago <br>
+          Matteo Visini <br>
+          Stefano Gubiolo</p>
+      </div>
+    </div>
+
+  </div>
+  </div>  
+  <div id="p5_loading"> ciaoo </div>
+     
+</body>
+
+<script>
+
+  function about() {
+    document.getElementById("about").className = "aboutmoved";
+
+  }
+
+  function noabout() {
+    document.getElementById("about").className = "noabout";
+  }
+</script>
+
 </html>

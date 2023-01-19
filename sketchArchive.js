@@ -17,7 +17,7 @@ let starLng
 
 //geolocation
 var locationData; //geolocation variable
-let RoundUp = 0.01; //geolocation round up
+let RoundUp = 0.015; //geolocation round up
 
   let starName = ""
   let cellName = ""
@@ -43,7 +43,6 @@ let maxNoisenucleo//grandezza nucleo
 let lapse = 0; // timer
 let noiseProg = (x) => x;
 //let myColor;
-let disegno;
 let velocitàStella = 200;
 let scale //= 1000;
 
@@ -54,10 +53,19 @@ let xdiff = stellax - laptopLat;
 let ydiff = stellay - laptopLng;
 
 let daysGone = 1
+let qrCode
+let myFont
+
 
 async function preload() {
   //geolocation function
   locationData = getCurrentPosition();
+  qrCode = loadImage("assets/frame.svg")
+  myFont = loadFont('assets/Replica Regular.otf');
+      myFontLight = loadFont('assets/Replica Light.otf');
+
+
+
 
   // load firebase app module
   // it will be loaded in a variable called initializeApp
@@ -116,13 +124,16 @@ function getStella(data) {
 function setup() {
   angleMode(DEGREES);
   colorMode(HSB);
-  createCanvas(windowWidth, windowHeight);
+  let canva =createCanvas(windowWidth, windowHeight);
+  canva.parent("canvasp5");
    slider()
-   atTime()
+  atTime()
+    textFont(myFont);
+
 
   
   //set laptop location
-  laptopLat = locationData.latitude +0.01;;
+  laptopLat = locationData.latitude;
   laptopLng = locationData.longitude;
   laptopAcc = locationData.accuracy;
   // Create objects
@@ -181,7 +192,8 @@ let sliderIncrease = 80
 //let geoxlaptop = 400;
 //let geoylaptop = 400;
 let scaleClick = 120
-let desaparecido = 1
+let desaparecido = 0
+let desaparecidoQR = 1
 let fine 
 let prova = 0
 function draw() {
@@ -190,17 +202,21 @@ function draw() {
 
    if (prova < 20){
      checkStelle()
-     incrementSlider()
     prova++
     }
 
   if (slider.value() >= 400) {
     desaparecido = desaparecido - 0.8
-    if (desaparecido < 0){desaparecido = 0}
+    desaparecidoQR = desaparecidoQR + 0.8
+
+    if (desaparecido < 0) { desaparecido = 0 }
+    if (desaparecidoQR < 0){desaparecidoQR = 0}
   }
   if (slider.value() <= 400) {
     desaparecido = desaparecido + 0.8
-    if (desaparecido > 1){desaparecido = 1}
+    desaparecidoQR = desaparecidoQR - 0.8
+    if (desaparecido > 1) { desaparecido = 1 }
+    if (desaparecidoQR > 1){desaparecidoQR = 1}
   }
   arraycreation();
   fill("white");
@@ -212,8 +228,27 @@ function draw() {
   }
   else { inter = 0.5 }
   fill("4d4d4d")
-  
 
+  if (slider.value() >= 300) { 
+    push()
+    textSize(16)
+    tint(0, 0, 0, desaparecidoQR);
+   
+    
+    image(qrCode, height / 100 * 4, (windowHeight - height / 100 * 14), 70,70)
+      fill(0,0,0,desaparecidoQR)
+
+      text("SCAN TO KEEP", height / 100 * 16, (windowHeight - height / 100 * 11));
+          text("GERMINATING" , height / 100 * 16, (windowHeight - height / 100 * 8));
+
+      text("THE MOTHER PARASITE" , height / 100 * 16, (windowHeight - height / 100 * 5));
+      
+
+    pop()
+    
+    
+  }
+ 
   
    push()
   fill(0,0,0,desaparecido)
@@ -357,7 +392,7 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
 }
 
 function slider() {
-  slider = createSlider(13, 500, 50);
+  slider = createSlider(13, 500, 500);
   slider.position( windowWidth - 250, windowHeight - 50);
   slider.style('width', '200px');
 
@@ -431,7 +466,7 @@ let stepCelle;
 let nCelle = 5; // number of blobs
 let radiusCelle = 0; // diameter of the circle
 let interCelle = 2; // difference between the sizes of two blobs
-let maxNoiseCelle = 25;  //grandezza
+let maxNoiseCelle  //grandezza
 let lapseCelle = 0;    // timer
 let noiseProgCelle = (x) => (x);
 let seed =0
@@ -448,7 +483,7 @@ function pazzia() {
       let x = noise((seed + 1000 * diametri[key].startingPos) / 300) * windowWidth;
       let y = noise((seed - 1000 * diametri[key].startingPos) / 300) * windowHeight;
       let cellColor = diametri[key].cellColor
-        
+        maxNoiseCelle = 25 + diametri[key].cellDimension
       //condizione prossimità
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
@@ -470,7 +505,9 @@ function pazzia() {
         for (let i = nCelle; i > 0; i--) {
           
             strokeWeight(1);
-            noStroke();
+          noStroke();
+          
+
 		fill(cellColor, 60-bright, 70+bright,1-cellOpacity);
             let size = radiusCelle + i * interCelle;
             let k = kMaxCelle * sqrt(i / nCelle);
@@ -565,12 +602,12 @@ function checkStelle() {
           starAdjustmentX = myLatStella - laptopLat
           starAdjustmentY = myLngStella - laptopLng
           fine = 1;
-          disegno = 1
             
           }
           else {
           console.log("there's nothing here")
-          
+          starAdjustmentX = 0
+          starAdjustmentY = 0
         } ;
         }
     
