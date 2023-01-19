@@ -311,7 +311,7 @@ function mouseClicked() {
     cellColor = 0
   }
     
-  if (cellDimension >= 1 && shaky ===0 ) {
+  if (shaky ===0 ) {
     cellDimension++
 
   }
@@ -388,7 +388,7 @@ function deviceShaken() {
     cellColor = 0
   }
     
-  if (cellDimension >= 1 && shaky ===0 ) {
+  if (shaky ===0 ) {
     cellDimension++
 
   }
