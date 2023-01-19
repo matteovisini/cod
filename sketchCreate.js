@@ -380,9 +380,9 @@ console.log(daysDiff)
 
 
 function deviceShaken() {
-  
+
    cellColor++
-  
+  oraEsatta()
   //submitDiametro()
   if (cellColor >= 360) {
     cellColor = 0
