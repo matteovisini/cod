@@ -38,13 +38,16 @@ The site can be accessed at any time, groups of people in the same place can dec
 #### Homepage
 The homepage is designed to present the project in its entirety in small parts. The landing page appears immediately interactive, as the movement of the background can be managed with the dynamic position of the mouse. In the centre there is the site logo, accompanied by the claim 'leave micro traces, trace macro limits', that appears with a delay of few seconds after the loading of the page. At the bottom right there is a call to action 'Go straight to the experience' that guides the user in the interaction.<br>
 <br>
-![homepage](links/home.gif)
+![homepage](links/Intro.gif)
 <br>
 <br>Starting with the first scroll, there is an initial description of what Parasite represents and what the user is going to experience. In the second scroll the qr code is presented,  inviting the users to begin their experience. Below the 'Go to the microverse' button takes the user to the archive section of the site.<br>
 <br>
 ![minigame](links/minigame.gif)
 <br>
 <br>The page is completed with a navbar emerging from the background with two buttons: Microverse (a further reminder of the archive) and About. Specifically, the About section appears as an overlay on the page in bright and vivid colours and provides detailed information about the project and the team. <br>
+<br>
+![minigame](links/About.gif)
+<br>
 <br>
 #### Mobile Interface
 After scanning the code on the landing page, the user arrives at the personalization page, designed for mobile. This interface consists of the logo at the top, a phrase welcoming the new cell to the world. The cell can be customized in its color and size by pressing the screen. In addition, the user can give it a name by filling in the name input. To send the cell to its parasite the person must shake the device.<br>
