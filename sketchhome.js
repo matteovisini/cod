@@ -24,7 +24,7 @@ function setup() {
 
 function draw() {
   push();
-  background("#1b1b1b");
+  background("#101010");
 
   kMax = map(mouseX, 0, width, 2, 4.0);
   let t = frameCount / 200;

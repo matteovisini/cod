@@ -58,10 +58,10 @@ canvas {
 }
 
 .navbox {
-  background-color: #0747a1;
+  background-color: #101010;
   border-radius: 10px;
   margin-right: 4vh;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.60);
 }
 
 .navb {
@@ -70,10 +70,14 @@ canvas {
 }
 
 .navb:hover {
-  background-color: #f8c2ff;
+  background-color: #6200FF;
   /* border-top-left-radius: 10px;
   border-bottom-left-radius: 10px; */
   border-radius: 10px;
+}
+
+#microverso:hover{
+  background-color: #FF1F53;
 }
 
 .navlogo {
@@ -269,9 +273,9 @@ canvas {
   opacity: 0%;
   position: absolute;
   color: white;
-  font-size: 2vh;
+  font-size: o.5vw;
   font-family: replica-light;
-  width: 40vh;
+  width: 44vh;
   margin-left: 4vh;
   margin-top: 15vh;
 }
@@ -279,11 +283,11 @@ canvas {
 .introduzione {
   position: absolute;
   color: white;
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-family: replica-light;
-  width: 70vh;
+  width: 74vh;
   margin-left: 4vh;
-  margin-top: 67vh;
+  margin-top: 74vh;
   mix-blend-mode: difference;
 }
 
@@ -361,7 +365,7 @@ canvas {
 
   float: right;
   background-color: transparent;
-  color: rgb(242, 206, 47);
+  color: rgb(98, 0, 255);
   border-radius: 10px;
   margin-right: 4vh;
 }
@@ -409,7 +413,7 @@ canvas {
   color: white;
   font-family: replica-reg;
   font-size: 2vh;
-  background-color: #0747a1;
+  background-color: #101010;
   border-radius: 10px;
   margin-left: 40vw;
   margin-top: 10vh;
@@ -423,7 +427,7 @@ canvas {
 }
 
 .colonytesto:hover {
-  background-color: rgb(242, 206, 47);
+  background-color: #FF1F53;
 }
 
 @keyframes flow {
