@@ -15,8 +15,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  /* display: none; */
-  z-index: 5;
+  display: none;
 }
 
 canvas {
@@ -59,22 +58,29 @@ canvas {
 }
 
 .navbox {
-  background-color: #212020;
+  background-color: #e0e0e0;
   border-radius: 10px;
   margin-right: 4vh;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  box-shadow: 0px 4px 4px rgba(88, 88, 88, 0.4);
 }
 
 .navb {
   display: flex;
   float: left;
+  color: rgb(0, 0, 0);
 }
 
 .navb:hover {
-  background-color: #cf9bff;
+  background-color: #6200ff;
+
   /* border-top-left-radius: 10px;
   border-bottom-left-radius: 10px; */
   border-radius: 10px;
+}
+
+#microverso:hover {
+  background-color: #e0e0e0;
 }
 
 .navlogo {
@@ -85,22 +91,20 @@ canvas {
 
 .navb a {
   display: block;
-  color: rgb(255, 255, 255);
+
+  color: #1b1b1b;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
   margin-left: 6vh;
   margin-right: 6vh;
+  font-family: replica-reg;
 }
 
 .logo {
   height: 6vh;
 }
 
-.logoBlack{
-  fill: #1b1b1b;
-  height: 6vh;
-}
 /* PARASITE WIRE*/
 
 .parasitewire {
@@ -271,11 +275,12 @@ canvas {
 /* DEFINIZIONE BLOCCO TESTO */
 
 .definizione {
+  opacity: 0%;
   position: absolute;
   color: white;
-  font-size: 1.8vh;
+  font-size: o.5vw;
   font-family: replica-light;
-  width: 38vh;
+  width: 44vh;
   margin-left: 4vh;
   margin-top: 15vh;
 }
@@ -285,10 +290,24 @@ canvas {
   color: white;
   font-size: 2.5vh;
   font-family: replica-light;
-  width: 50vh;
+  width: 74vh;
   margin-left: 4vh;
-  margin-top: 60vh;
+  margin-top: 74vh;
+  mix-blend-mode: difference;
 }
+
+/* .introduzione {
+  position: absolute;
+  color: rgb(255, 255, 255);
+  font-size: 2.5vw;
+  font-family: replica-reg;
+  mix-blend-mode: exclusion;
+  text-align: center;
+  width: 80vw;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  margin-top: 28vh;
+} */
 
 /* ABOUT */
 
@@ -351,10 +370,9 @@ canvas {
 
   float: right;
   background-color: transparent;
-  color: rgb(215, 181, 31);
+  color: rgb(98, 0, 255);
   border-radius: 10px;
   margin-right: 4vh;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .testiabout {
@@ -367,6 +385,7 @@ canvas {
   background-color: #1e1e1e;
   margin-bottom: 1vh;
   line-height: 2.5vh;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes aboutmove {
@@ -399,7 +418,7 @@ canvas {
   color: white;
   font-family: replica-reg;
   font-size: 2vh;
-  background-color: #1e1e1e;
+  background-color: #101010;
   border-radius: 10px;
   margin-left: 40vw;
   margin-top: 10vh;
@@ -409,11 +428,11 @@ canvas {
   animation-duration: 3s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
+  opacity: 100%;
 }
 
 .colonytesto:hover {
-  background-color: #2d2d2d;
-  color: #cdb52e;
+  background-color: #ff1f53;
 }
 
 @keyframes flow {
@@ -426,4 +445,76 @@ canvas {
   100% {
     margin-top: 10vh;
   }
+}
+
+/*BLOCCO MOBILE*/
+
+.bloccomobile {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 10;
+}
+
+@media all and (max-width: 970px) {
+  .bloccomobile {
+    display: block;
+    position: absolute;
+    font-family: replica-reg;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 10;
+  }
+}
+
+/*SLIDER*/
+.sliderz {
+  -webkit-appearance: none; /* Override default CSS styles */
+  position: absolute;
+  margin-top: 94vh;
+  margin-left: 76vw;
+  appearance: none;
+  width: 20vw; /* Full-width */
+  height: 0.8vh; /* Specified height */
+  border-radius: 17px;
+  background: #ff1f53; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  color: #ff1f53;
+  z-index: 3;
+}
+
+.sliderz::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 30px;
+  background: #ff1f53;
+  cursor: pointer;
+}
+
+.slideto {
+  position: absolute;
+  z-index: 10;
+  color: #606060;
+  font-size: 1.2vw;
+  font-family: replica-reg;
+  margin-top: 90vh;
+  margin-left: 76vw;
+}
+
+.puntatore {
+  opacity: 60%;
+  pointer-events: none;
+  padding: 0;
+  position: absolute;
+  width: 100vw;
+  text-align: center;
+  height: 100vh;
+  margin-top: 45vh;
+  z-index: 8;
 }

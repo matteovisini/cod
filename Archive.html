@@ -4,14 +4,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
     <script src="libraries/p5.geolocation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylehome.css" />
+    
+     <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+<link rel="stylesheet" type="text/css" href="stylearchive.css" />
+   
     <meta charset="utf-8" />
   </head>
   <body>
     <main></main>
     <script src="sketchArchive.js"></script>
-
-
+     
+<!-- <div id="sliderContainer" >
+  <input type="range" min="13" max="500" value="500" id="slider" class="sliderz">
+</div> -->
+ 
 
 
 
@@ -20,7 +31,7 @@
       <a href="home.html"><img class="logo" src="assets/logonavbarBlack.svg" /></a>
     </div>
     <div class="navbox">
-      <div class="navb"><a href="#Archivepage">MICROVERSE</a></div>
+      <div class="navb" id="microverso"><a href="#" style="color:#FF1F53;">MICROVERSE</a></div>
       <div onmouseleave="noabout()" style="all:unset">
         <div class="navb" onmouseover="about()"><a href="#popup">ABOUT</a></div>
       </div>
@@ -30,7 +41,7 @@
   <div id="canvasp5" class="canvasp5"></div>
   <div class="about" id="about">
     <div class="aboutbox" style="margin-top: 10vh">
-      <div class="testiabout" style="color: white; background-color:rgb(183, 158, 47) ;">
+      <div class="testiabout"  style="color: white; background-color:rgb(98, 0, 255);">
         Technology is often perceived as invisible and untouchable, as
         something that connects everyone even miles away. PARASITE reveals the
         proliferation of connection, placing a geographic barrier to users
@@ -41,7 +52,7 @@
         is only an archive of the footprint of other activities.
       </div>
 
-      <div class="testiabout" style="background-color: #78c08b; color: white;">
+      <div class="testiabout"  style="background-color: #1ec463; color: white;">
         <p style="font-family: replica-reg;">THE TEAM</p>
         <p>PARASITE does not represent only the simulation of the behaviour of microorganisms. PARASITE is also an
           academic project designed during the Creative Coding Course in Politecnico di Milano. </p>
@@ -55,7 +66,10 @@
 
   </div>
   </div>  
-  <div id="p5_loading"> ciaoo </div>
+  <!-- <div id="p5_loading"> ciaoo </div> -->
+
+  <div class="slideto">slide to view neighboring colonies</div>
+  <div class="puntatore"><img style="width: 10vh;" src="/assets/puntatoreGaiser.svg" alt=""></div>
      
 </body>
 
