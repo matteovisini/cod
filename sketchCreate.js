@@ -37,6 +37,23 @@ let currentDate
  
 let threshold = 30
 
+
+
+let kMax;
+let step;
+let n = 10; // number of blobs
+let radius = 0; // diameter of the circle
+let inter = 0; // difference between the sizes of two blobs
+let maxNoise ;  //grandezza
+let lapse = 0;    // timer
+let cellColor;
+let rand;
+let incrementoBright 
+let cellDimension
+
+
+
+
 async function preload() {
 
   // Inizializzo Geolocalizzazione
@@ -94,21 +111,6 @@ function getDiametro(data) {
 function getStella(data) {
   stelle = data.val();
   stars = Object.keys(stelle);
-}
-
-let preventShake = 1
-
-
-function deviceShaken() {
-  
-  cellColor = cellColor +2
-  //submitDiametro()
-  if (cellColor >= 360) {
-    cellColor = 0
-  }
-    
-  
-
 }
 
 function setup() {
@@ -290,21 +292,6 @@ function submitDiametro() {
 }
 
 
-
-
-
-let kMax;
-let step;
-let n = 10; // number of blobs
-let radius = 0; // diameter of the circle
-let inter = 0; // difference between the sizes of two blobs
-let maxNoise ;  //grandezza
-let lapse = 0;    // timer
-let cellColor;
-let rand;
-let incrementoBright 
-let cellDimension
-
 function drawCella() {
   background("#1e1e1e");
   maxNoise = 300 + (cellDimension*20)
@@ -405,3 +392,14 @@ console.log(daysDiff)
  */
 
 
+function deviceShaken() {
+  
+  cellColor = cellColor +5
+  //submitDiametro()
+  if (cellColor >= 360) {
+    cellColor = 0
+  }
+    
+  
+
+}
