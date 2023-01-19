@@ -35,7 +35,7 @@ let startingPos
 let creationDate
 let currentDate
  
-let threshold = 50
+let threshold =50
 
 let myFont
 let myFontLight
@@ -388,12 +388,14 @@ function mouseClicked() {
   tap ++
 }
 function deviceShaken() {
-
+ submitDiametro()
+  afterShake()
+  
   shakeSafe++ 
-  if (shakesafe > 5 && shakesafe <6){
+  /* if (shakesafe > 5 && shakesafe <6){
     submitDiametro()
     afterShake()
-  }
+  } */
 
 }
 
