@@ -94,6 +94,10 @@ function getStella(data) {
   stars = Object.keys(stelle);
 }
 
+function deviceShaken() {
+  submitDiametro()
+}
+
 function setup() {
   fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
@@ -115,11 +119,12 @@ let canva =createCanvas(windowWidth, windowHeight);
   nameInput =createInput();
   nameInput.parent("nameInput");
 
-  nameInput.attribute("required")
+ 
 
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
  
+
   //randomcolor
   startingPoint = random(255);
 
@@ -329,7 +334,6 @@ function mouseClicked() {
     cellColor = round(random(36))*10;
     oraEsatta()
     cellDimension = round(random(20))
-    submitDiametro()
   }
 
 }
