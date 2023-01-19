@@ -96,9 +96,13 @@ function getStella(data) {
   stars = Object.keys(stelle);
 }
 
-
+submitDiametro()
 function deviceShaken() {
-  submitDiametro()
+  cellColor = cellColor + 2
+  if (cellColor >= 360) {
+    cellColor = 0
+  }
+
 }
 
 function setup() {
@@ -114,6 +118,7 @@ let canva =createCanvas(windowWidth, windowHeight);
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
   startingPos = random(255)
   diametro = 5;
+  cellColor= round(random(36))*10;
 
   createP("Click the button to get points");
   button = createButton("click");
@@ -330,6 +335,8 @@ function cell(size, xCenter, yCenter, k, t, noisiness) {
 
 //change color on tap
 function mouseClicked() {
+
+  cellColor = 1
 
     cellColor = round(random(36))*10;
     oraEsatta()
