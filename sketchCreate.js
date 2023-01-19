@@ -33,7 +33,9 @@ let fakeLng //solo per cambiare velocemente, da togliere alla fine
 var currentHour
 let startingPos
 let creationDate
- let currentDate
+let currentDate
+ 
+let threshold = 30
 
 async function preload() {
 
@@ -94,10 +96,15 @@ function getStella(data) {
   stars = Object.keys(stelle);
 }
 
+
+function deviceShaken() {
+  submitDiametro()
+}
+
 function setup() {
   fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
-  
+  setShakeThreshold(threshold)
 let canva =createCanvas(windowWidth, windowHeight);
   canva.parent("canvasp5");
   colorMode(HSB);
@@ -115,11 +122,10 @@ let canva =createCanvas(windowWidth, windowHeight);
   nameInput =createInput();
   nameInput.parent("nameInput");
 
-  nameInput.attribute("required")
-
   submitButton = createButton("submit");
   submitButton.mousePressed(submitDiametro);
  
+
   //randomcolor
   startingPoint = random(255);
 
@@ -261,7 +267,6 @@ function submitDiametro() {
     lat: lat,
     lng: lng,
     acc: acc
-
   };
 
   // create a new entry
@@ -325,12 +330,11 @@ function cell(size, xCenter, yCenter, k, t, noisiness) {
 
 //change color on tap
 function mouseClicked() {
-  if (mouseY <= windowHeight - 100 ){
+
     cellColor = round(random(36))*10;
     oraEsatta()
-    cellDimension = round(random(20))
-    submitDiametro()
-  }
+  cellDimension = round(random(20))
+
 
 }
 
