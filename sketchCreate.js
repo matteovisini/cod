@@ -35,7 +35,7 @@ let startingPos
 let creationDate
 let currentDate
  
-let threshold =50
+
 
 let myFont
 let myFontLight
@@ -118,7 +118,6 @@ let undefinedCell
 function setup() {
   fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
-  setShakeThreshold(threshold)
 let canva =createCanvas(windowWidth, windowHeight);
   canva.parent("canvasp5");
   colorMode(HSB);
@@ -387,15 +386,13 @@ let shakeSafe = 1
 function mouseClicked() {
   tap ++
 }
-function deviceShaken() {
- submitDiametro()
-  afterShake()
+function deviceShaken() { 
   
   shakeSafe++ 
-  /* if (shakesafe > 5 && shakesafe <6){
+  if (shakesafe > 5 && shakesafe <6){
     submitDiametro()
     afterShake()
-  } */
+  }
  
 }
 
