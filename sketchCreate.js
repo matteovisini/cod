@@ -390,7 +390,7 @@ function mouseClicked() {
 function deviceShaken() {
 
   shakeSafe++ 
-  if (shakesafe == 5){
+  if (shakesafe > 5 && shakesafe <6){
     submitDiametro()
     afterShake()
   }
@@ -412,6 +412,8 @@ textFont(myFont);
   document.getElementById("textShake").innerHTML = nameInput.value() + " has infested parasite located in: " + round(lat, 7) + ", " + round(lng, 7) + "<br> <br> Click on the QR code on your laptop"
   
   "Click on the QR code on your laptop"
+
+  shakeSafe = 7
 }
  
 
