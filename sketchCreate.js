@@ -34,7 +34,7 @@ var currentHour
 let startingPos
 let creationDate
 let currentDate
- 
+
 
 
 let myFont
@@ -59,7 +59,7 @@ async function preload() {
 
   // Inizializzo Geolocalizzazione
   locationData =  getCurrentPosition();
-
+ setShakeThreshold(50)
   // load firebase app module
   // it will be loaded in a variable called initializeApp
   const fb_app = "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
