@@ -113,6 +113,7 @@ function getStella(data) {
   stars = Object.keys(stelle);
 }
 
+let undefinedCell
 function setup() {
   fakeLat = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
   fakeLng = 0//+ random (-0.5, +0.5)//solo per cambiare velocemente, da togliere alla fine
@@ -131,7 +132,8 @@ let canva =createCanvas(windowWidth, windowHeight);
   button = createButton("click");
   button.mousePressed(increaseDiametro); // aumento diametro
 
-  nameInput =createInput();
+  undefinedCell = round (random (1000))
+  nameInput =createInput("Undefined cell #"+undefinedCell);
   nameInput.parent("nameInput");
 
   submitButton = createButton("submit");
