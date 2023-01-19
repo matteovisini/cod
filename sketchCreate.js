@@ -126,7 +126,7 @@ let canva =createCanvas(windowWidth, windowHeight);
   console.log("Your current position is:",lat,lng,"accuracy:",acc)
   startingPos = random(255)
   diametro = 5;
-
+   shaky =0 
   createP("Click the button to get points");
   button = createButton("click");
   button.mousePressed(increaseDiametro); // aumento diametro
@@ -145,7 +145,7 @@ let canva =createCanvas(windowWidth, windowHeight);
 	kMax = random(0.2, 0.3);
 	step = 0.01;
   cellColor = round(random(36))*10;
-  cellDimension = round(random(20))
+  cellDimension = round(random(10))
 
   rand = random(7);
 
@@ -164,6 +164,13 @@ function draw() {
   textSize(100);
   circle(width / 2, height / 2, diametro);
   drawCella()
+
+   if (cellDimension === 15) {
+    shaky =1 
+  }
+  if (cellDimension === 1) {
+    shaky =0
+  }
 }
 
 
@@ -291,48 +298,27 @@ function submitDiametro() {
   checkStelle() 
 }
 
-
-function drawCella() {
-  background("#1e1e1e");
-  maxNoise = 300 + (cellDimension*20)
-
-  let t = frameCount/80;
-  let bright = 0;
-  for (let i = n; i > 0; i--) {
-    noStroke(); 
-		fill(cellColor, 60-bright, 70+bright);
-		let size = radius + i * inter;
-		let k = kMax * sqrt(i/n);
-		let noisiness = maxNoise * (i / n);
-    cell(size, width/2, height/2, k, t - i * step, noisiness);
-    bright = bright+incrementoBright
-  }
-}
-
-
-function cell(size, xCenter, yCenter, k, t, noisiness) {
-  beginShape();
-	let angleStep = 360/200;
-  for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
-    let r1, r2;
-		r1 = cos(theta)+2*10;
-		r2 = sin(theta)+2*10;
-    let r = size + noise(k * r1,  k * r2, t) * noisiness;
-    let x = xCenter + r * cos(theta);
-    let y = yCenter + r * sin(theta);
-    curveVertex(x, y);
-  }
-  endShape();
-}
-
 //change color on tap
+let shaky 
 function mouseClicked() {
 
     //cellColor = round(random(36))*10;
     oraEsatta()
-  cellDimension = round(random(20))
+  cellColor++
+  
+  //submitDiametro()
+  if (cellColor >= 360) {
+    cellColor = 0
+  }
+    
+  if (cellDimension >= 1 && shaky ===0 ) {
+    cellDimension++
 
+  }
 
+  if (shaky ===1) {
+    cellDimension = cellDimension -1
+  }
 }
 
 function oraEsatta() {
@@ -393,13 +379,57 @@ console.log(daysDiff)
 
 
 function deviceShaken() {
+      
+   cellColor++
   
-  cellColor = cellColor +5
   //submitDiametro()
   if (cellColor >= 360) {
     cellColor = 0
   }
     
+  if (cellDimension >= 1 && shaky ===0 ) {
+    cellDimension++
+
+  }
+
+  if (shaky ===1) {
+    cellDimension = cellDimension -1
+  }
   
 
+}
+
+
+
+function drawCella() {
+  background("#505050");
+  maxNoise = 300 + (cellDimension*20)
+
+  let t = frameCount/80;
+  let bright = 0;
+  for (let i = n; i > 0; i--) {
+    noStroke(); 
+		fill(cellColor, 60-bright, 70+bright);
+		let size = radius + i * inter;
+		let k = kMax * sqrt(i/n);
+		let noisiness = maxNoise * (i / n);
+    cell(size, width/2, height/2, k, t - i * step, noisiness);
+    bright = bright+incrementoBright
+  }
+}
+
+
+function cell(size, xCenter, yCenter, k, t, noisiness) {
+  beginShape();
+	let angleStep = 360/200;
+  for (let theta = 0; theta <= 360 + 2 * angleStep; theta += angleStep) {
+    let r1, r2;
+		r1 = cos(theta)+2*10;
+		r2 = sin(theta)+2*10;
+    let r = size + noise(k * r1,  k * r2, t) * noisiness;
+    let x = xCenter + r * cos(theta);
+    let y = yCenter + r * sin(theta);
+    curveVertex(x, y);
+  }
+  endShape();
 }
