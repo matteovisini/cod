@@ -132,17 +132,12 @@ let canva =createCanvas(windowWidth, windowHeight);
   startingPos = random(255)
   diametro = 5;
    shaky =0 
-  createP("Click the button to get points");
-  button = createButton("click");
-  button.mousePressed(increaseDiametro); // aumento diametro
+
 
   undefinedCell = round (random (1000))
-  nameInput =createInput("Undefined cell #"+undefinedCell);
+  nameInput =createInput("cell #"+undefinedCell);
   nameInput.parent("nameInput");
 
-  submitButton = createButton("submit");
-  submitButton.mousePressed(submitDiametro);
- 
 
   //randomcolor
   startingPoint = random(255);
@@ -395,10 +390,9 @@ function mouseClicked() {
 function deviceShaken() {
 
   shakeSafe++ 
-  if (shakesafe === 5){
+  if (shakesafe == 5){
     submitDiametro()
     afterShake()
-
   }
 
 }
