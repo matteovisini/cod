@@ -165,10 +165,10 @@ function draw() {
   circle(width / 2, height / 2, diametro);
   drawCella()
 
-   if (cellDimension === 15) {
+   if (cellDimension > 15) {
     shaky =1 
   }
-  if (cellDimension === 1) {
+  if (cellDimension < 1) {
     shaky =0
   }
 }
@@ -319,6 +319,7 @@ function mouseClicked() {
   if (shaky ===1) {
     cellDimension = cellDimension -1
   }
+console.log(shaky)
 }
 
 function oraEsatta() {
@@ -377,14 +378,9 @@ console.log(daysDiff)
 }
  */
 
-function touchEnded(event) {
-	if(DeviceOrientationEvent && DeviceOrientationEvent.requestPermission){
-		DeviceOrientationEvent.requestPermission()
-	}
-}
 
 function deviceShaken() {
-      
+  
    cellColor++
   
   //submitDiametro()
@@ -400,6 +396,8 @@ function deviceShaken() {
   if (shaky ===1) {
     cellDimension = cellDimension -1
   }
+console.log(shaky)
+    
   
 
 }
@@ -407,7 +405,7 @@ function deviceShaken() {
 
 
 function drawCella() {
-  background("#505050");
+  background("#1e1e1e");
   maxNoise = 300 + (cellDimension*20)
 
   let t = frameCount/80;
@@ -437,4 +435,10 @@ function cell(size, xCenter, yCenter, k, t, noisiness) {
     curveVertex(x, y);
   }
   endShape();
+}
+
+function touchEnded(event) {
+	if(DeviceOrientationEvent && DeviceOrientationEvent.requestPermission){
+		DeviceOrientationEvent.requestPermission()
+	}
 }
