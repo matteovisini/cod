@@ -453,9 +453,10 @@ canvas {
   margin-left: 15vw;
   margin-right: 15vw;
   text-decoration: none;
-  top: 70vh;
+  bottom: 20vh;
   left: 0;
-  right:0
+  right:0;
+  height: 5vh;
 
 }
 
