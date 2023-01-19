@@ -446,6 +446,10 @@ canvas {
   top:20vh;
   left:0;
   width:100%;
+  -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
 .infoCreate {
@@ -462,6 +466,10 @@ canvas {
   left: 0;
   right:0;
   height: 5vh;
+  -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
 
 }
 
