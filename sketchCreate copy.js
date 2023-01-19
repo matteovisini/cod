@@ -96,19 +96,9 @@ function getStella(data) {
   stars = Object.keys(stelle);
 }
 
-let preventShake = 1
-
 
 function deviceShaken() {
-  
-  cellColor = cellColor +2
-  //submitDiametro()
-  if (cellColor >= 360) {
-    cellColor = 0
-  }
-    
-  
-
+  submitDiametro()
 }
 
 function setup() {
@@ -142,7 +132,7 @@ let canva =createCanvas(windowWidth, windowHeight);
 	angleMode(DEGREES);
 	kMax = random(0.2, 0.3);
 	step = 0.01;
-  cellColor = round(random(36))*10;
+  cellColor = random(360); 
   cellDimension = round(random(20))
 
   rand = random(7);
@@ -341,7 +331,7 @@ function cell(size, xCenter, yCenter, k, t, noisiness) {
 //change color on tap
 function mouseClicked() {
 
-    //cellColor = round(random(36))*10;
+    cellColor = round(random(36))*10;
     oraEsatta()
   cellDimension = round(random(20))
 
