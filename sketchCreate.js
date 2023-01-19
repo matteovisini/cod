@@ -390,10 +390,9 @@ function mouseClicked() {
 function deviceShaken() {
 
   shakeSafe++ 
-  if (shakesafe === 5){
+  if (shakesafe == 5){
     submitDiametro()
     afterShake()
-
   }
 
 }
