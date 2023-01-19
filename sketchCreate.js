@@ -396,7 +396,7 @@ function deviceShaken() {
     submitDiametro()
     afterShake()
   } */
-
+ 
 }
 
 function afterShake() {
