@@ -387,9 +387,9 @@ function mouseClicked() {
   tap ++
 }
 function deviceShaken() { 
-  
+
   shakeSafe++ 
-  if (shakesafe > 5 && shakesafe <6){
+  if (shakeSafe === 5 ){
     submitDiametro()
     afterShake()
   }
