@@ -377,6 +377,11 @@ console.log(daysDiff)
 }
  */
 
+function touchEnded(event) {
+	if(DeviceOrientationEvent && DeviceOrientationEvent.requestPermission){
+		DeviceOrientationEvent.requestPermission()
+	}
+}
 
 function deviceShaken() {
       
