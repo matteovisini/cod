@@ -506,6 +506,29 @@ input:hover{
   z-index: 10;
 }
 
+.nameInput{
+    -webkit-user-select: none;
+      -ms-user-select: none;
+      -webkit-touch-callout: none;
+      user-select: none;
+}
+
+.textShake{
+  font-family: replica-reg;
+    position: fixed;
+    z-index: 5;
+    color: rgb(255, 255, 255);
+    font-size: 3vh;
+    text-align: center;
+    text-decoration: none;
+    left: 0;
+    width: 100%;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+
+}
 @media all and (min-width: 600px) {
   .bloccomobile {
     display: block;

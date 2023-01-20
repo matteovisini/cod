@@ -14,7 +14,7 @@ let stars = [];
 
 let starLat;
 let starLng;
-
+let singoloDiametro
 //geolocation
 var locationData; //geolocation variable
 let RoundUp = 0.015; //geolocation round up
@@ -55,6 +55,8 @@ let ydiff = stellay - laptopLng;
 let daysGone = 1;
 let qrCode;
 let myFont;
+
+let sommadiametri = 0
 
 async function preload() {
   //geolocation function
@@ -140,10 +142,40 @@ function setup() {
 let mousemovecheck = 0;
 
 function arraycreation() {
+  maxNoise = slider.value()
   stars.forEach(function (key) {
+    
     push();
     translate(width / 2, height / 2);
     rotate(270);
+
+      myLatStella = stelle[key].latStella;
+      myLngStella = stelle[key].lngStella;
+
+      keys.forEach(function (key) {
+
+        let latCell = diametri[key].lat;
+        let lngCell = diametri[key].lng;
+
+        if (
+          latCell <= myLatStella + RoundUp &&
+          latCell >= myLatStella - RoundUp &&
+          lngCell <= myLngStella + RoundUp &&
+          lngCell >= myLngStella - RoundUp
+        ) {       
+
+         singoloDiametro = 0.01  * slider.value();
+          maxNoise = maxNoise + singoloDiametro;
+          maxNoisenucleo = maxNoise / 2;
+
+        }
+        })
+     
+    
+
+
+
+    
     drawStella(
       stelle[key].latStella,
       stelle[key].lngStella,
@@ -248,7 +280,7 @@ function draw() {
   arraycreation();
   fill("white");
   scale = slider.value() * 120;
-  maxNoise = slider.value();
+
   maxNoisenucleo = maxNoise / 2;
   if (slider.value() < 50) {
     inter = 0.2;
@@ -351,10 +383,13 @@ function draw() {
   if (slider.value() > 400) {
     desaparecido = desaparecido - 0.4;
     push();
+
     pazzia();
 
     pop();
   }
+  starDimension() 
+
 }
 //circle(width / 2, height / 2, 30);
 //stars.forEach(function (key) {
@@ -376,7 +411,7 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
     laptopLat,
     laptopLng
   );
-
+//console.log(diameter)
   push();
   stroke("#4d4d4d");
   strokeWeight(0.1);
@@ -404,7 +439,7 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
       stroke(colore, 100, brightness, 0.2);
       let size = radius + i * inter;
       let k = tipo * sqrt(i / n);
-      let noisiness = maxNoise * noiseProg(i / n);
+      let noisiness = diameter * noiseProg(i / n);
       blob(
         size,
         (xdiff - starAdjustmentX) * scale,
@@ -550,6 +585,8 @@ function pazzia() {
   //celle
   push();
   if (keys) {
+    
+     
     keys.forEach(function (key) {
       //posizione e movimento celle
       let x =
@@ -557,7 +594,8 @@ function pazzia() {
       let y =
         noise((seed - 1000 * diametri[key].startingPos) / 300) * windowHeight;
       let cellColor = diametri[key].cellColor;
-      maxNoiseCelle = 25 + diametri[key].cellDimension;
+      maxNoiseCelle = 20 + (diametri[key].cellDimension * 2);
+    
       //condizione prossimità
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
@@ -598,7 +636,8 @@ function pazzia() {
         textSize(12);
 
         text(diametri[key].name, x, y - 20);
-      }
+   
+              }
     });
   }
   pop();
@@ -677,3 +716,64 @@ function checkStelle() {
     });
   }
 }
+
+
+function starDimension() {
+
+  if (keys) {
+    maxNoise = slider.value()
+     
+    keys.forEach(function (key) {
+
+      let lat = diametri[key].lat;
+      let lng = diametri[key].lng;
+      
+    
+
+      if (
+        lat <= laptopLat + RoundUp &&
+        lat >= laptopLat - RoundUp &&
+        lng <= laptopLng + RoundUp &&
+        lng >= laptopLng - RoundUp
+      ) {
+        /* singoloDiametro = 0.01 * slider.value();
+        maxNoise = maxNoise + singoloDiametro;
+        maxNoisenucleo = maxNoise / 2;  */
+
+              }
+    });
+  }
+}
+
+
+/* function caa() {
+  fine = 0; // se cambia, finisce il ciclo
+
+    
+  stars.forEach(function (key) {
+      myLatStella = stelle[key].latStella;
+      myLngStella = stelle[key].lngStella;
+
+      keys.forEach(function (key) {
+
+        let latCell = diametri[key].lat;
+        let lngCell = diametri[key].lng;
+
+        if (
+          latCell <= myLatStella + RoundUp &&
+          latCell >= myLatStella - RoundUp &&
+          lngCell <= myLngStella + RoundUp &&
+          lngCell >= myLngStella - RoundUp
+        ) {       
+
+         singoloDiametro = 0.01  * slider.value();
+          maxNoise = maxNoise + singoloDiametro;
+          maxNoisenucleo = maxNoise / 2;
+
+        }
+        })
+        console.log(maxNoise);
+    }
+  )
+
+  } */
