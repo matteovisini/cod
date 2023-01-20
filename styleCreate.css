@@ -513,7 +513,7 @@ input:hover{
       user-select: none;
 }
 
-.textShake{
+.textShake {
   font-family: replica-reg;
     position: fixed;
     z-index: 5;
@@ -522,7 +522,33 @@ input:hover{
     text-align: center;
     text-decoration: none;
     left: 0;
-    width: 100%;
+    width:80vw;
+    bottom: 25vh;
+    margin-left: 10vw;
+      margin-right: 10vw;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+.textShake2 {
+  font-family: replica-light;
+  position: fixed;
+  z-index: 5;
+  color: rgb(163, 163, 163);
+  font-size: 2vh;
+  text-align: center;
+  width: 70vw;
+    margin-left: 15vw;
+    margin-right: 15vw;
+  bottom: 15vh;
+  
+    text-decoration: none;
+
+    left: 0;
+    padding-left: 6vw;
+    padding-right: 6vw;
     -webkit-user-select: none;
     -ms-user-select: none;
     -webkit-touch-callout: none;
@@ -548,17 +574,20 @@ input:hover{
     position: absolute;
     z-index: 8;
     background-color: #101010;
-    color: white;
     text-align: center;
     width: 100vw;
     height: 100vh;
-    padding-top: 40vh;
+    padding-top: 30vh;
     padding-left: 6vw;
     padding-right: 6vw;
   }
 
   .check{
-    margin-bottom:2vh;
+    
+    animation: check;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
   }
 
     div.load {
@@ -592,5 +621,19 @@ input:hover{
   
       100% {
         transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes check {
+      0% {
+        margin-top: 10vh;
+      }
+
+      50% {
+        margin-top: 10.7vh;
+      }
+
+      100% {
+        margin-top: 10vh;
       }
     }

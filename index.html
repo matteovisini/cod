@@ -94,9 +94,10 @@ Giulia Zago</p>
         </div>
       </div>
       <div class="sezione" style="background-color:transparent" >
-      <div class="parasitewire" id="QR">
-          <a href="archivio.html" style="all: unset; pointer-events: fill;"><img src="assets/qr.svg" alt="" style="margin-top: -6vh;"/></a>
-          <div class="colonytesto"><a href="Archive.html" style="all: unset;">GO TO THE MICROVERSE</a></div>
+      <div class="parasitewire" id="QR" >
+          <a href="archive.html" style="all: unset; pointer-events: fill;"><img src="assets/qr.svg" alt="" style="margin-top: -6vh; cursor: pointer;
+" onclick="setArchiveValue()"/></a>
+          <div class="colonytesto"><a href="archive.html" style="all: unset;">OR GO TO THE MICROVERSE</a></div>
         </div>
         <div class="payoffbox">
           <div class="payoff">scan the QR code</div>
@@ -128,5 +129,13 @@ Giulia Zago</p>
      function nodefinition(){
       document.getElementById("definition").style.opacity = "0";
     }
+
+     function setArchiveValue(){
+      var archive = 1;
+      localStorage.setItem("archivePage", archive);
+      window.location.href = "archive.html";
+     }
+     
   </script>
 </html>
+

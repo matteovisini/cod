@@ -408,9 +408,10 @@ textFont(myFont);
   
   let textShake = select("#textShake")
 
-  document.getElementById("textShake").innerHTML = nameInput.value() + " has infested parasite located in: " + round(lat, 7) + ", " + round(lng, 7) + "<br> <br> Click on the QR code on your laptop"
-  
-  "Click on the QR code on your laptop"
+  document.getElementById("textShake").innerHTML = nameInput.value() + " has infested parasite located in: <br>" + round(lat, 7) + ", " + round(lng, 7)
+  let textShake2 = select("#textShake2")
+  document.getElementById("textShake2").innerHTML = "Click on the QR code on your laptop to continue"
+
 
   shakeSafe = 7
 }

@@ -1,24 +1,28 @@
-let cells = []; // array of objects
-
-// firebase global variables
+/* firebase global variables */
 let db;
 let database;
 let scoreRef;
 let scoreRef2;
 
 let keys = [];
-let diametri;
+let diametri; // array of cells
 
 let stelle;
-let stars = [];
+let stars = []; // array of parasites
 
-let starLat;
-let starLng;
-let singoloDiametro
-//geolocation
+/* geolocation initialization and roundup */
 var locationData; //geolocation variable
 let RoundUp = 0.015; //geolocation round up
 
+/* empty variables for the laptop current location */
+let laptopLat;
+let laptopLng;
+let laptopAcc;
+
+let starLat; //empty lat for the stars
+let starLng; //empty lng for the stars
+
+/*empty field for the info text */
 let starName = "";
 let cellName = "";
 let currentStarLat = "";
@@ -26,55 +30,69 @@ let currentStarLng = "";
 let starDistance = "";
 let starDate = "";
 
-let sommacerchi;
-
-let laptopLat;
-let laptopLng;
-let laptopAcc;
-
-let kMax;
+/* variables for the parasite */
 let step;
-let n = 80; // number of blobs
-let n2 = n / 5;
-let radius = 0; // diameter of the circle
+let n = 80; // number to create the parsite shape
+let n2 = n / 5; // number to create the parasite nucleus
+let radius = 0; // diameter of the starting circle
 let inter; // difference between the sizes of two blobs
-let maxNoise; //grandezza
-let maxNoisenucleo; //grandezza nucleo
+let maxNoise; //parsite noise that change dimension
+let maxNoisenucleo; //nucleus noise
 let lapse = 0; // timer
 let noiseProg = (x) => x;
-//let myColor;
-let velocitàStella = 200;
-let scale; //= 1000;
+let starSpeed = 200; //parasite speed
+let singoloDiametro; // allows the parasite to grow
 
+/* variables for the cells */
+let kMaxCelle;
+let stepCelle = 0.01;
+let nCelle = 5; // number of cells
+let radiusCelle = 0; // diameter of the starting circle
+let interCelle = 2; // difference between the sizes of two blobs
+let maxNoiseCelle; //nucleus noise
+let lapseCelle = 0; // timer
+let noiseProgCelle = (x) => x;
+let seed = 0;
+
+/* empty variables to draw the parasite in the correct position */
 let stellax;
 let stellay;
 
-let xdiff = stellax - laptopLat;
-let ydiff = stellay - laptopLng;
+let daysGone = 1; //controls how quickly the cells fade over time. Use 10,100,1000 etc to make it slowler
 
-let daysGone = 1;
-let qrCode;
-let myFont;
+/* things that involves slider */
+let archive = localStorage.getItem("archivePage"); //recover the data from the homepage to know if zoom on the parasite
+let sliderStart; //value for the starting pos of the zoom slider
+let scale; //empty value for the zoom with the slider, change it to quickly change the scale of the archive
+let desaparecido = 0; //makes text at the bottom appear or disappear based on zoom
+let desaparecidoQR = 1; //makes QR appear or disappear based on zoom
 
-let sommadiametri = 0
+/* variables for the checkStelle() function */
+let check = 0; //counter to repeat multiple times the check for presence of a near parasite in the database
+let fine; // empty variable to better control checkStelle()
 
+
+/* x and y for the background grid */
+let xgrid = 0;
+let ygrid = 0;
+
+/* preload */
 async function preload() {
-  //geolocation function
+  /* geolocation function */
   locationData = getCurrentPosition();
+
+  /* image and font preload */
   qrCode = loadImage("assets/frame.svg");
   myFont = loadFont("assets/Replica Regular.otf");
   myFontLight = loadFont("assets/Replica Light.otf");
 
-  // load firebase app module
-  // it will be loaded in a variable called initializeApp
+  /* load firebase app module */
   const fb_app = "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
-  const { initializeApp } = await import(fb_app);
+  const { initializeApp } = await import(fb_app); // it will be loaded in a variable called initializeApp
 
-  // loading firebase database module
-  // it will be loaded in a variable called "db"
   const fb_database =
-    "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
-  db = await import(fb_database);
+    "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js"; // loading firebase database module
+  db = await import(fb_database); // it will be loaded in a variable called "db"
 
   // Your web app's Firebase configuration
   // You can get this information from the firebase console
@@ -90,92 +108,95 @@ async function preload() {
     measurementId: "G-X8FH1YXKXD",
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  // Initialize Database
-  database = db.getDatabase(app);
-  // The reference to database key where we store data
-  // we use this both for reading and writing
-  scoreRef = db.ref(database, "diametri");
-  scoreRef2 = db.ref(database, "stelle");
-  // define the callback function that will be called when
-  // new data will arrive
+  const app = initializeApp(firebaseConfig); // Initialize Firebase
+  database = db.getDatabase(app); // Initialize Database
+
+  // The reference to database key where data are stored
+  scoreRef = db.ref(database, "diametri"); // cells
+  scoreRef2 = db.ref(database, "stelle"); // parasites
+
+  // define the callback function that will be called when new data will arrive
   db.onValue(scoreRef, getDiametro);
   db.onValue(scoreRef2, getStella);
 }
 
+/* get incoming cells */
 function getDiametro(data) {
-  //get incoming data
   diametri = data.val();
   keys = Object.keys(diametri);
-  console.log("la funzione getDiametro è partita");
+  // console.log("la funzione getDiametro è partita");
 }
 
+/* get incoming parasites */
 function getStella(data) {
-  //get incoming data
   stelle = data.val();
   stars = Object.keys(stelle);
   checkStelle();
-  console.log("la funzione getStella è partita");
+  // console.log("la funzione getStella è partita");
 }
 
 function setup() {
+  let canva = createCanvas(windowWidth, windowHeight);
+  canva.parent("canvasp5"); //canva related to the div in the HTML
+
+  //general settings
   angleMode(DEGREES);
   colorMode(HSB);
-  let canva = createCanvas(windowWidth, windowHeight);
-  canva.parent("canvasp5");
-  slider();
-  atTime();
   textFont(myFont);
 
-  //set laptop location
+  //check if data from localStorage has arrived, if yes, change the sliderStart
+  //console.log(archive);
+  if (archive > 0) {
+    sliderStart = 500; // zoom in
+    localStorage.clear(); // clear the 0 in the localStorage
+  } else {
+    sliderStart = 20; // zoom out
+  }
+  slider(); //calls the function to construct the slider
+
+  atTime(); //calls the function to calculate the days
+
+  //set laptop geolocation
   laptopLat = locationData.latitude;
   laptopLng = locationData.longitude;
   laptopAcc = locationData.accuracy;
-  // Create objects
 
-  //stars.forEach(function (key) {
-
+  //set random value for the cells movement
   kMaxCelle = random(0.1, 0.9);
-  stepCelle = 0.01;
 }
-let mousemovecheck = 0;
 
+/* creation of the array to place parasites */
 function arraycreation() {
-  maxNoise = slider.value()
+  maxNoise = slider.value(); //maxNoise starting value
+
   stars.forEach(function (key) {
-    
     push();
-    translate(width / 2, height / 2);
-    rotate(270);
+    translate(width / 2, height / 2); //translate everything to put it in the middle of the canvas
+    rotate(270); //rotate everything to match north (we don't know why we had to do this, maybe we made some formula errors before)
 
-      myLatStella = stelle[key].latStella;
-      myLngStella = stelle[key].lngStella;
+    //variables to check every single parasite positions in the database
+    myLatStella = stelle[key].latStella;
+    myLngStella = stelle[key].lngStella;
 
-      keys.forEach(function (key) {
+    keys.forEach(function (key) {
+      //variables to check every single cells in the database
+      let latCell = diametri[key].lat;
+      let lngCell = diametri[key].lng;
 
-        let latCell = diametri[key].lat;
-        let lngCell = diametri[key].lng;
+      //increases the size of different parasites based on nearby cells
+      if (
+        latCell <= myLatStella + RoundUp &&
+        latCell >= myLatStella - RoundUp &&
+        lngCell <= myLngStella + RoundUp &&
+        lngCell >= myLngStella - RoundUp
+      ) {
+        singoloDiametro = 0.01 * slider.value();
+        maxNoise = maxNoise + singoloDiametro;
+        maxNoisenucleo = maxNoise / 2;
+      }
+    });
 
-        if (
-          latCell <= myLatStella + RoundUp &&
-          latCell >= myLatStella - RoundUp &&
-          lngCell <= myLngStella + RoundUp &&
-          lngCell >= myLngStella - RoundUp
-        ) {       
-
-         singoloDiametro = 0.01  * slider.value();
-          maxNoise = maxNoise + singoloDiametro;
-          maxNoisenucleo = maxNoise / 2;
-
-        }
-        })
-     
-    
-
-
-
-    
+    /* gets all the elements to draw the parasites */
     drawStella(
       stelle[key].latStella,
       stelle[key].lngStella,
@@ -186,12 +207,14 @@ function arraycreation() {
     );
     pop();
 
-    let hoverInfo = 80 / 4 + slider.value();
+    let hoverInfo = 80 / 4 + slider.value(); // scale space where it is possible to hover on parasites based on the zoom
+    
+    /* sets all the data for the info box in the corner */
     if (
-      ydiff * scale + width / 2 - hoverInfo < mouseX &&
-      ydiff * scale + width / 2 + hoverInfo > mouseX &&
-      -1 * (xdiff * scale) + height / 2 - hoverInfo < mouseY &&
-      -1 * (xdiff * scale) + height / 2 + hoverInfo > mouseY
+      (stellay - laptopLng) * scale + width / 2 - hoverInfo < mouseX &&
+      (stellay - laptopLng) * scale + width / 2 + hoverInfo > mouseX &&
+      -1 * ((stellax - laptopLat) * scale) + height / 2 - hoverInfo < mouseY &&
+      -1 * ((stellax - laptopLat) * scale) + height / 2 + hoverInfo > mouseY
     ) {
       starName = stelle[key].starName;
       cellName = stelle[key].creatorName;
@@ -199,36 +222,12 @@ function arraycreation() {
       currentStarLng = stelle[key].lngStella;
       starDate = stelle[key].creationDate;
 
-      distanceKm();
+      distanceKm(); //function to calculate the formula for large distances in KM
     }
-
-    /* let starX = stelle[key].latStella - laptopLat
-      let starY = stelle[key].lngStella - laptopLng
-
-         let distance = dist(starX+width/2, starY+height/2,mouseX, mouseY,);
-      if (mouseIsPressed === true) {
-        if (distance < 80) {
-          console.log("cacchio")
-        }
-  } */
   });
 }
 
-let nomeutente;
-//mousemovecheck = 1;
-
-let sliderIncrease = 80;
-//let geoxlaptop = 400;
-//let geoylaptop = 400;
-let scaleClick = 120;
-let desaparecido = 0;
-let desaparecidoQR = 1;
-let fine;
-let prova = 0;
-
-let xgrid = 0;
-let ygrid = 0;
-
+/* draws the background grid */
 function grid() {
   push();
 
@@ -248,11 +247,12 @@ function grid() {
 function draw() {
   background("#ededed"); //background
 
-  grid();
+  grid(); //draws the background grid
 
-  if (prova < 20) {
+  /* Repeated search for nearby stars in the database to avoid problems with slow position detection */
+  if (check < 20) {
     checkStelle();
-    prova++;
+    check++;
   }
 
   if (slider.value() >= 400) {
@@ -388,8 +388,7 @@ function draw() {
 
     pop();
   }
-  starDimension() 
-
+  starDimension();
 }
 //circle(width / 2, height / 2, 30);
 //stars.forEach(function (key) {
@@ -402,8 +401,8 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
   let colore = scolore;
   let tipo = stipo;
   let brightness = sbrightness;
-  xdiff = stellax - laptopLat;
-  ydiff = stellay - laptopLng;
+  let xdiff = stellax - laptopLat;
+  let ydiff = stellay - laptopLng;
   let diameter = sommacerchi;
   let d = dist(
     stellax - starAdjustmentX,
@@ -411,7 +410,7 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
     laptopLat,
     laptopLng
   );
-//console.log(diameter)
+  //console.log(diameter)
   push();
   stroke("#4d4d4d");
   strokeWeight(0.1);
@@ -423,7 +422,7 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
   //blob
   push();
 
-  let t = frameCount / velocitàStella;
+  let t = frameCount / starSpeed;
   if (
     (ydiff - starAdjustmentY) * scale + width / 2 > 0 &&
     (ydiff - starAdjustmentY) * scale + width / 2 < windowWidth &&
@@ -513,7 +512,7 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
 }
 
 function slider() {
-  slider = createSlider(13, 500, 500);
+  slider = createSlider(13, 500, sliderStart);
   //slider.position(windowWidth - 250, windowHeight - 50);
   //slider.style("width", "200px");
   //slider.style("background-color", "#ff4848");
@@ -570,23 +569,12 @@ function mouseReleased() {
   isIncrementing = false;
 }
 
-let kMaxCelle;
-let stepCelle;
-let nCelle = 5; // number of blobs
-let radiusCelle = 0; // diameter of the circle
-let interCelle = 2; // difference between the sizes of two blobs
-let maxNoiseCelle; //grandezza
-let lapseCelle = 0; // timer
-let noiseProgCelle = (x) => x;
-let seed = 0;
 function pazzia() {
   seed++;
 
   //celle
   push();
   if (keys) {
-    
-     
     keys.forEach(function (key) {
       //posizione e movimento celle
       let x =
@@ -594,8 +582,8 @@ function pazzia() {
       let y =
         noise((seed - 1000 * diametri[key].startingPos) / 300) * windowHeight;
       let cellColor = diametri[key].cellColor;
-      maxNoiseCelle = 20 + (diametri[key].cellDimension * 2);
-    
+      maxNoiseCelle = 20 + diametri[key].cellDimension * 2;
+
       //condizione prossimità
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
@@ -636,8 +624,7 @@ function pazzia() {
         textSize(12);
 
         text(diametri[key].name, x, y - 20);
-   
-              }
+      }
     });
   }
   pop();
@@ -717,18 +704,13 @@ function checkStelle() {
   }
 }
 
-
 function starDimension() {
-
   if (keys) {
-    maxNoise = slider.value()
-     
-    keys.forEach(function (key) {
+    maxNoise = slider.value();
 
+    keys.forEach(function (key) {
       let lat = diametri[key].lat;
       let lng = diametri[key].lng;
-      
-    
 
       if (
         lat <= laptopLat + RoundUp &&
@@ -739,12 +721,10 @@ function starDimension() {
         /* singoloDiametro = 0.01 * slider.value();
         maxNoise = maxNoise + singoloDiametro;
         maxNoisenucleo = maxNoise / 2;  */
-
-              }
+      }
     });
   }
 }
-
 
 /* function caa() {
   fine = 0; // se cambia, finisce il ciclo
