@@ -121,8 +121,8 @@ function setup() {
 let canva =createCanvas(windowWidth, windowHeight);
   canva.parent("canvasp5");
   colorMode(HSB);
-  lat = locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
-  lng = locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
+  lat = 45.43248464489723//locationData.latitude + fakeLat//Cambia questo per forzare la tua lat
+  lng = 8.593096490762926//locationData.longitude+ fakeLng//Cambia questo per forzare la tua lng
   acc = locationData.accuracy
   console.log("Your current position is:", lat, lng, "accuracy:", acc)
   

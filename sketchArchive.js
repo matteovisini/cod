@@ -307,18 +307,18 @@ function draw() {
     text(
       "SCAN TO KEEP",
       (height / 100) * 16,
-      windowHeight - 70
+      windowHeight - (height / 100) * 12.5
     );
     text(
       "GERMINATING",
       (height / 100) * 16,
-      windowHeight - 50
+      windowHeight - (height / 100) * 9.5
     );
 
     text(
       "THIS PARASITE",
       (height / 100) * 16,
-      windowHeight - 30
+      windowHeight - (height / 100) * 6.5
     );
 
     pop();

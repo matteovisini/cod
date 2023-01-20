@@ -78,12 +78,15 @@ Bottom right, accompained by the words 'slide to view neighbouring colonies', a 
 
 #### Design challenges
 
+<br>
 Starting from the metaphor of microorganisms, a highly moldable generative form that could abstract that aesthetic was sought.
 The chosen shape is created by overlapping distorted circles, filled in the core part and wireframed in the outer part.
 A second element created are the cells of each individual user for which an aesthetic consistent with the parasite was pursued while still highlighting the hierarchical difference.
 <br>
+<br>
 The site identity echoes the parasite aesthetic by using an organic wireframe font for the site name and icons.
 The palette uses bright colors for accents and graphic elements and a neutral background.
+<br>
 
 #### Coding challenges
 
