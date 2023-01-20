@@ -247,6 +247,8 @@ function grid() {
 function draw() {
   background("#ededed"); //background
 
+  scale = slider.value() * 120; // set scale parameters according to the slider
+
   grid(); //draws the background grid
 
   /* Repeated search for nearby stars in the database to avoid problems with slow position detection */
@@ -254,6 +256,17 @@ function draw() {
     checkStelle();
     check++;
   }
+
+  arraycreation(); //function to place parasites
+
+  //change values ​​for scale adjustment with zoom
+  if (slider.value() < 50) {
+    inter = 0.2;
+  } else {
+    inter = 0.5;
+  }
+
+  /* Show different infomations according to the two zoom level */
 
   if (slider.value() >= 400) {
     desaparecido = desaparecido - 0.8;
@@ -276,19 +289,7 @@ function draw() {
       desaparecidoQR = 1;
     }
   }
-
-  arraycreation();
-  fill("white");
-  scale = slider.value() * 120;
-
-  maxNoisenucleo = maxNoise / 2;
-  if (slider.value() < 50) {
-    inter = 0.2;
-  } else {
-    inter = 0.5;
-  }
-  fill("4d4d4d");
-
+  
   if (slider.value() >= 300) {
     push();
     textSize(16);
@@ -370,29 +371,30 @@ function draw() {
   }
   pop();
 
-  let clickabile = dist(width / 2, height / 2, mouseX, mouseY);
+  /* make the center clickable to auto zoom */
+  let clickabile = dist(width / 2, height / 2, mouseX, mouseY); 
   if (mouseIsPressed === true) {
     if (clickabile < 80 / 4 + slider.value()) {
       if (isIncrementing) {
         return;
       }
       isIncrementing = true;
-      incrementSlider();
+      incrementSlider(); //makes the auto zoom possible, leaving the user the possibility to change the slider
     }
   }
-  if (slider.value() > 400) {
+
+  /* draws cells when the view is zoomed */
+  if (slider.value() > 360) {
     desaparecido = desaparecido - 0.4;
     push();
 
-    pazzia();
+    cells(); //draws cells 
 
     pop();
   }
   starDimension();
 }
-//circle(width / 2, height / 2, 30);
-//stars.forEach(function (key) {
-//});
+
 
 function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
   //blob
@@ -569,7 +571,7 @@ function mouseReleased() {
   isIncrementing = false;
 }
 
-function pazzia() {
+function cells() {
   seed++;
 
   //celle

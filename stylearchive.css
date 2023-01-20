@@ -498,13 +498,17 @@ canvas {
 }
 
 .slideto {
+  text-align: right;
   position: absolute;
   z-index: 10;
   color: #606060;
-  font-size: 1.2vw;
+  font-size: 2vh;
   font-family: replica-reg;
-  margin-top: 90vh;
+  bottom:0;
+  margin-bottom: 8vh;
   margin-left: 76vw;
+  margin-right: 4vw;
+
 }
 
 .puntatore {
