@@ -392,7 +392,7 @@ function draw() {
 
     pop();
   }
-  starDimension();
+  //starDimension();
 }
 
 
