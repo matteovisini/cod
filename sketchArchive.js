@@ -307,18 +307,18 @@ function draw() {
     text(
       "SCAN TO KEEP",
       (height / 100) * 16,
-      windowHeight - (height / 100) * 12.5
+      windowHeight - 70
     );
     text(
       "GERMINATING",
       (height / 100) * 16,
-      windowHeight - (height / 100) * 9.5
+      windowHeight - 50
     );
 
     text(
       "THIS PARASITE",
       (height / 100) * 16,
-      windowHeight - (height / 100) * 6.5
+      windowHeight - 30
     );
 
     pop();
@@ -392,12 +392,10 @@ function draw() {
 
     pop();
   }
-  //starDimension();
 }
 
-
+  /* function that draws parasite on data created by the array */
 function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
-  //blob
   stellax = sx;
   stellay = sy;
   let colore = scolore;
@@ -412,7 +410,6 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
     laptopLat,
     laptopLng
   );
-  //console.log(diameter)
   push();
   stroke("#4d4d4d");
   strokeWeight(0.1);
@@ -433,7 +430,7 @@ function drawStella(sx, sy, scolore, stipo, sbrightness, sommacerchi) {
   ) {
     for (let i = n; i > 0; i--) {
       //if (ydiff*scale>0 && ydiff*scale<windowHeight){
-      strokeWeight(2);
+      strokeWeight(3);
       noFill();
       step = 0.01;
       let alpha = 1 - noiseProg(i / n);
@@ -670,7 +667,6 @@ function atTime(cellDate) {
     daysDiff = 8 * daysGone;
   }
   cellOpacity = daysDiff / (10 * daysGone);
-  //console.log (cellOpacity)
 }
 
 let starAdjustmentX;
@@ -720,42 +716,7 @@ function starDimension() {
         lng <= laptopLng + RoundUp &&
         lng >= laptopLng - RoundUp
       ) {
-        /* singoloDiametro = 0.01 * slider.value();
-        maxNoise = maxNoise + singoloDiametro;
-        maxNoisenucleo = maxNoise / 2;  */
       }
     });
   }
 }
-
-/* function caa() {
-  fine = 0; // se cambia, finisce il ciclo
-
-    
-  stars.forEach(function (key) {
-      myLatStella = stelle[key].latStella;
-      myLngStella = stelle[key].lngStella;
-
-      keys.forEach(function (key) {
-
-        let latCell = diametri[key].lat;
-        let lngCell = diametri[key].lng;
-
-        if (
-          latCell <= myLatStella + RoundUp &&
-          latCell >= myLatStella - RoundUp &&
-          lngCell <= myLngStella + RoundUp &&
-          lngCell >= myLngStella - RoundUp
-        ) {       
-
-         singoloDiametro = 0.01  * slider.value();
-          maxNoise = maxNoise + singoloDiametro;
-          maxNoisenucleo = maxNoise / 2;
-
-        }
-        })
-        console.log(maxNoise);
-    }
-  )
-
-  } */
