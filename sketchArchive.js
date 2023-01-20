@@ -147,7 +147,7 @@ function setup() {
   //check if data from localStorage has arrived, if yes, change the sliderStart
   //console.log(archive);
   if (archive > 0) {
-    sliderStart = 500; // zoom in
+    sliderStart = 400; // zoom in
     localStorage.clear(); // clear the 0 in the localStorage
   } else {
     sliderStart = 20; // zoom out
@@ -268,7 +268,7 @@ function draw() {
 
   /* Show different infomations according to the two zoom level */
 
-  if (slider.value() >= 400) {
+  if (slider.value() >= 300) {
     desaparecido = desaparecido - 0.8;
     desaparecidoQR = desaparecidoQR + 0.8;
 
@@ -279,7 +279,7 @@ function draw() {
       desaparecidoQR = 0;
     }
   }
-  if (slider.value() <= 400) {
+  if (slider.value() <= 300) {
     desaparecido = desaparecido + 0.8;
     desaparecidoQR = desaparecidoQR - 0.8;
     if (desaparecido > 1) {
@@ -514,7 +514,7 @@ function nucleo(size, xCenter, yCenter, k, t, noisiness) {
 }
 
 function slider() {
-  slider = createSlider(13, 500, sliderStart);
+  slider = createSlider(13, 400, sliderStart);
   //slider.position(windowWidth - 250, windowHeight - 50);
   //slider.style("width", "200px");
   //slider.style("background-color", "#ff4848");
@@ -559,7 +559,7 @@ function distanceKm() {
 let isIncrementing = false;
 
 function incrementSlider() {
-  if (slider.value() >= 500) {
+  if (slider.value() >= 400) {
     isIncrementing = false;
     return;
   }
