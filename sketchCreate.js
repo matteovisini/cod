@@ -188,8 +188,8 @@ let starType
 function checkStelle() {
   //set laptop location
  
-  laptopLat = lat //Cambia questo per forzare la tua lat
-  laptopLng = lng //Cambia questo per forzare la tua lng
+  laptopLat = 45.43248464489723 //lat //Cambia questo per forzare la tua lat
+  laptopLng = 8.593096490762926 //lng //Cambia questo per forzare la tua lng
   laptopAcc = acc
 
   // variabili per controllare il ciclo
